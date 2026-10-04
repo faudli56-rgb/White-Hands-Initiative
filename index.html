@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مبادرة الأيادي البيضاء للتكافل والتمكين</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- الشريط العلوي -->
+    <header>
+        <a href="#" class="logo" id="logoText">الأيادي البيضاء</a>
+        <div class="nav-controls">
+            <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙 داكن</button>
+            <button class="icon-btn" onclick="toggleLanguage()" id="langBtn">English</button>
+            <button class="icon-btn login-btn" onclick="openLoginModal()" id="loginBtn">دخول الإدارة</button>
+        </div>
+    </header>
+
+    <!-- القسم الترحيبي -->
+    <section class="hero">
+        <h1 id="heroTitle">عطاءٌ يحفظ الكرامة… وأيادٍ تصنع الأثر</h1>
+        <p id="heroSubtitle">منصة التكافل الأولى في اليمن. نربط المحتاج بالداعم بشفافية تامة.</p>
+        <a href="#" id="downloadAppBtn" class="btn-main" target="_blank">📱 حمل التطبيق الآن</a>
+    </section>
+
+    <!-- أدوات التصفية -->
+    <section class="filters">
+        <select id="govFilter" onchange="fetchAndRenderCases()">
+            <option value="all" id="optAll">جميع المحافظات اليمنية</option>
+            <option value="صنعاء">صنعاء</option>
+            <option value="عدن">عدن</option>
+            <option value="تعز">تعز</option>
+            <option value="الحديدة">الحديدة</option>
+            <option value="مأرب">مأرب</option>
+            <option value="حضرموت">حضرموت</option>
+            <option value="إب">إب</option>
+            <option value="شبوة">شبوة</option>
+            <option value="أبين">أبين</option>
+            <option value="الضالع">الضالع</option>
+            <option value="المهرة">المهرة</option>
+            <option value="البيضاء">البيضاء</option>
+            <option value="ذمار">ذمار</option>
+            <option value="حجة">حجة</option>
+            <option value="صعدة">صعدة</option>
+            <option value="الجوف">الجوف</option>
+            <option value="المحويت">المحويت</option>
+            <option value="ريمة">ريمة</option>
+            <option value="لحج">لحج</option>
+            <option value="سقطرى">سقطرى</option>
+        </select>
+        
+        <select id="catFilter" onchange="fetchAndRenderCases()">
+            <option value="all" id="optCatAll">جميع الحالات</option>
+            <option value="فزعة" id="optCatUrgent">فزعة عاجلة</option>
+            <option value="مرضية" id="optCatMed">حالات مرضية</option>
+            <option value="أيتام" id="optCatOrp">أيتام</option>
+        </select>
+    </section>
+
+    <!-- شبكة الحالات -->
+    <div class="cases-grid" id="casesContainer">
+        <p id="loadingMsg" style="text-align: center; width: 100%;">جاري تحميل الحالات...</p>
+    </div>
+
+    <!-- نافذة تسجيل الدخول (Modal) -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginModal()">&times;</span>
+            <h2 id="loginTitle" style="color: var(--primary); margin-bottom: 20px;">بوابة الدخول</h2>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <input type="text" id="username" placeholder="اسم المستخدم" required>
+                <input type="password" id="password" placeholder="كلمة المرور" required>
+                <button type="submit" class="btn-main" id="submitLoginBtn" style="width: 100%; margin-top: 15px;">دخول</button>
+            </form>
+            <p id="loginStatus" style="text-align: center; margin-top: 10px;"></p>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
