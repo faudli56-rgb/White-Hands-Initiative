@@ -1,7 +1,7 @@
 // --- 1. الإعدادات المركزية ---
 const CONFIG = {
     // ⚠️ ضع رابط السكربت الذي حصلت عليه بعد نشر Google Apps Script هنا
-    API_URL: "ضع_رابط_سكربت_جوجل_هنا", 
+    API_URL: "https://script.google.com/macros/s/AKfycby3niM52qJV1XmzFPACUzIb0DNfwMaWuZ0LtighB-x1x1eaLfLvNtMLHCIhRVrPyW-_lg/exec", 
     APP_DOWNLOAD_URL: "https://drive.google.com/1iJPQbmg28_IJIqBcM2K0GhPskbq7jXYb" 
 };
 
