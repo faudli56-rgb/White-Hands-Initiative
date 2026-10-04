@@ -2,81 +2,154 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مبادرة الأيادي البيضاء للتكافل والتمكين</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0a2240">
+    <title>مبادرة الأيادي البيضاء</title>
+    
+    <!-- خطوط جوجل -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    
+    <!-- 1. أيقونة التطبيق والمتصفح من قوقل درايف -->
+    <link rel="apple-touch-icon" href="https://drive.google.com/uc?export=view&id=1HZd2tQR6byICk89Z1KOI6NWv5d3F-9Xr">
+    <link rel="icon" href="https://drive.google.com/uc?export=view&id=1HZd2tQR6byICk89Z1KOI6NWv5d3F-9Xr" type="image/png">
 </head>
 <body>
-    <!-- الشريط العلوي -->
-    <header>
-        <a href="#" class="logo" id="logoText">الأيادي البيضاء</a>
-        <div class="nav-controls">
-            <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙 داكن</button>
-            <button class="icon-btn" onclick="toggleLanguage()" id="langBtn">English</button>
-            <button class="icon-btn login-btn" onclick="openLoginModal()" id="loginBtn">دخول الإدارة</button>
-        </div>
-    </header>
+    <div id="app-container">
+        <!-- الشريط العلوي -->
+        <header class="app-header">
+            <div class="logo-container">
+                <!-- 2. الشعار الرئيسي للموقع من قوقل درايف -->
+                <img src="https://drive.google.com/uc?export=view&id=1HZd2tQR6byICk89Z1KOI6NWv5d3F-9Xr" alt="شعار الأيادي البيضاء" class="logo-img">
+                <div class="header-titles">
+                    <h1>الأيادي البيضاء</h1>
+                    <small>نصل بالعطاء إلى مستحقيه</small>
+                </div>
+            </div>
+            <button class="icon-btn" onclick="openModal('loginModal')">⚙️ الإدارة</button>
+        </header>
 
-    <!-- القسم الترحيبي -->
-    <section class="hero">
-        <h1 id="heroTitle">عطاءٌ يحفظ الكرامة… وأيادٍ تصنع الأثر</h1>
-        <p id="heroSubtitle">منصة التكافل الأولى في اليمن. نربط المحتاج بالداعم بشفافية تامة.</p>
-        <a href="#" id="downloadAppBtn" class="btn-main" target="_blank">📱 حمل التطبيق الآن</a>
-    </section>
+        <main class="app-content">
+            <!-- قسم التعريف بالمبادرة -->
+            <section class="about-section">
+                <h2 class="section-title">من نحن</h2>
+                <div class="about-card">
+                    <p><strong>الرؤية:</strong> مجتمع متكافل تصل فيه المساعدة إلى مستحقها بكرامة وشفافية وثقة.</p>
+                    <p><strong>الرسالة:</strong> استقبال الحالات الإنسانية والتحقق منها وربطها بالداعمين، وإيصال الدعم بشفافية تحفظ كرامة المستفيد.</p>
+                    <hr>
+                    <p style="text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-top: 10px;">
+                        إشراف رئيسة المبادرة: <strong>أ. بلقيس محمد</strong>
+                    </p>
+                </div>
+            </section>
 
-    <!-- أدوات التصفية -->
-    <section class="filters">
-        <select id="govFilter" onchange="fetchAndRenderCases()">
-            <option value="all" id="optAll">جميع المحافظات اليمنية</option>
-            <option value="صنعاء">صنعاء</option>
-            <option value="عدن">عدن</option>
-            <option value="تعز">تعز</option>
-            <option value="الحديدة">الحديدة</option>
-            <option value="مأرب">مأرب</option>
-            <option value="حضرموت">حضرموت</option>
-            <option value="إب">إب</option>
-            <option value="شبوة">شبوة</option>
-            <option value="أبين">أبين</option>
-            <option value="الضالع">الضالع</option>
-            <option value="المهرة">المهرة</option>
-            <option value="البيضاء">البيضاء</option>
-            <option value="ذمار">ذمار</option>
-            <option value="حجة">حجة</option>
-            <option value="صعدة">صعدة</option>
-            <option value="الجوف">الجوف</option>
-            <option value="المحويت">المحويت</option>
-            <option value="ريمة">ريمة</option>
-            <option value="لحج">لحج</option>
-            <option value="سقطرى">سقطرى</option>
-        </select>
-        
-        <select id="catFilter" onchange="fetchAndRenderCases()">
-            <option value="all" id="optCatAll">جميع الحالات</option>
-            <option value="فزعة" id="optCatUrgent">فزعة عاجلة</option>
-            <option value="مرضية" id="optCatMed">حالات مرضية</option>
-            <option value="أيتام" id="optCatOrp">أيتام</option>
-        </select>
-    </section>
+            <!-- حسابات الإيداع -->
+            <section class="bank-accounts">
+                <h2 class="section-title">حسابات التبرع المعتمدة</h2>
+                <div class="accounts-grid">
+                    <div class="account-card">
+                        <h4>بنك الكريمي</h4>
+                        <p>رقم الحساب: 123456789</p>
+                    </div>
+                    <div class="account-card">
+                        <h4>جوالي / النجم</h4>
+                        <p>رقم المحفظة: 770000000</p>
+                    </div>
+                </div>
+            </section>
 
-    <!-- شبكة الحالات -->
-    <div class="cases-grid" id="casesContainer">
-        <p id="loadingMsg" style="text-align: center; width: 100%;">جاري تحميل الحالات...</p>
+            <!-- أزرار الإجراءات السريعة -->
+            <div class="action-buttons">
+                <button class="btn-primary" onclick="openModal('beneficiaryModal')">📝 طلب مساعدة (مستفيد)</button>
+                <button class="btn-secondary" onclick="openModal('volunteerModal')">🤝 انضم كمتطوع</button>
+            </div>
+
+            <!-- تصفية الحالات -->
+            <div class="filter-chips">
+                <button class="chip active" onclick="applyFilter('all', this)">الكل</button>
+                <button class="chip" onclick="applyFilter('فزعة', this)">🚨 فزعة</button>
+                <button class="chip" onclick="applyFilter('مرضية', this)">💊 مرضية</button>
+                <button class="chip" onclick="applyFilter('أيتام', this)">👨‍👩‍👧 أيتام</button>
+            </div>
+
+            <!-- عرض الحالات -->
+            <section class="priority-cases">
+                <h2 class="section-title">حالات قيد الإغلاق</h2>
+                <div id="casesList" class="cases-list">
+                    <div class="loading-spinner">جاري مزامنة الحالات...</div>
+                </div>
+            </section>
+        </main>
     </div>
 
-    <!-- نافذة تسجيل الدخول (Modal) -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeLoginModal()">&times;</span>
-            <h2 id="loginTitle" style="color: var(--primary); margin-bottom: 20px;">بوابة الدخول</h2>
+    <!-- نافذة تسجيل الدخول -->
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal-surface">
+            <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
+            <h3>بوابة الفريق</h3>
             <form id="loginForm" onsubmit="handleLogin(event)">
-                <input type="text" id="username" placeholder="اسم المستخدم" required>
-                <input type="password" id="password" placeholder="كلمة المرور" required>
-                <button type="submit" class="btn-main" id="submitLoginBtn" style="width: 100%; margin-top: 15px;">دخول</button>
+                <input type="text" id="username" class="modern-input" placeholder="اسم المستخدم" required>
+                <input type="password" id="password" class="modern-input" placeholder="كلمة المرور" required>
+                <button type="submit" class="btn-primary" id="submitLoginBtn">دخول</button>
             </form>
-            <p id="loginStatus" style="text-align: center; margin-top: 10px;"></p>
+            <p id="loginStatus" class="status-msg"></p>
         </div>
     </div>
 
-    <script src="main.js"></script>
+    <!-- نافذة طلب مستفيد -->
+    <div id="beneficiaryModal" class="modal-overlay">
+        <div class="modal-surface">
+            <span class="close-btn" onclick="closeModal('beneficiaryModal')">&times;</span>
+            <h3>تقديم طلب مساعدة</h3>
+            <p style="font-size: 0.8rem; color: var(--danger); margin-bottom: 10px;">الطلب يخضع للتحقق الميداني الصارم</p>
+            <form id="beneficiaryForm" onsubmit="submitBeneficiary(event)">
+                <input type="text" id="benTitle" class="modern-input" placeholder="نوع الاحتياج (مثال: عملية جراحية)" required>
+                <textarea id="benDesc" class="modern-input" placeholder="شرح مبسط للحالة" rows="3" required></textarea>
+                <input type="number" id="benAmount" class="modern-input" placeholder="المبلغ التقريبي المطلوب (ريال)" required>
+                <select id="benGov" class="modern-input" required>
+                    <option value="">اختر المحافظة...</option>
+                    <option value="مأرب">مأرب</option>
+                    <option value="تعز">تعز</option>
+                </select>
+                <select id="benCat" class="modern-input" required>
+                    <option value="">تصنيف الحالة...</option>
+                    <option value="مرضية">مرضية</option>
+                    <option value="معسرة">أسرة معسرة</option>
+                    <option value="أيتام">أيتام</option>
+                </select>
+                <button type="submit" class="btn-primary" id="btnSubmitBen">إرسال الطلب للإدارة</button>
+            </form>
+            <p id="benStatus" class="status-msg"></p>
+        </div>
+    </div>
+
+    <!-- نافذة التطوع -->
+    <div id="volunteerModal" class="modal-overlay">
+        <div class="modal-surface">
+            <span class="close-btn" onclick="closeModal('volunteerModal')">&times;</span>
+            <h3>استمارة التطوع</h3>
+            <form id="volunteerForm" onsubmit="submitVolunteer(event)">
+                <input type="text" id="volName" class="modern-input" placeholder="الاسم الرباعي" required>
+                <input type="tel" id="volPhone" class="modern-input" placeholder="رقم الواتساب" required>
+                <select id="volGov" class="modern-input" required>
+                    <option value="">المحافظة التي تقيم بها...</option>
+                    <option value="مأرب">مأرب</option>
+                    <option value="تعز">تعز</option>
+                </select>
+                <input type="text" id="volSkills" class="modern-input" placeholder="أبرز المهارات (تصوير، بحث ميداني...)" required>
+                <button type="submit" class="btn-secondary" id="btnSubmitVol">تقديم الطلب</button>
+            </form>
+            <p id="volStatus" class="status-msg"></p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
+        }
+    </script>
 </body>
 </html>
