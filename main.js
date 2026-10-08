@@ -1,97 +1,154 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbwfsGOzMDVj3eClJdqFrZ8wD08XqgkktaX6HN7hBnXhA_e6pBbU0xTaaAW8V1h3-oIvXQ/exec";
+let globalCases = [];
 
-// 1. جلب إعدادات الموقع (الصور الديناميكية)
+// التحكم بالقائمة الجانبية
+function toggleMenu() {
+    document.getElementById('sideMenu').classList.toggle('open');
+}
+
+// التبديل بين التبويبات (الرئيسية، الحالات، التطوع)
+function switchTab(tabId, navElement) {
+    // إخفاء كل التبويبات
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+    // إظهار التبويب المطلوب
+    document.getElementById(tabId).classList.add('active');
+    
+    // تغيير لون أيقونة شريط التنقل
+    if(navElement) {
+        document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+        navElement.classList.add('active');
+    }
+}
+
+// النوافذ المنبثقة
+function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+// جلب الإعدادات والصور
 async function fetchSettings() {
     try {
         const res = await fetch(`${API_URL}?action=getSettings`);
         const settings = await res.json();
-        
-        // تطبيق الصور من قاعدة البيانات على الواجهة
         if(settings.HeroBgImage) {
             document.getElementById('dynamicHeroBg').style.backgroundImage = `url('${settings.HeroBgImage}')`;
         }
-        if(settings.MapImage) document.getElementById('dynamicMapImg').src = settings.MapImage;
-        if(settings.AboutImage) document.getElementById('dynamicAboutImg').src = settings.AboutImage;
-        if(settings.PromoImage) document.getElementById('dynamicPromoImg').src = settings.PromoImage;
-        
-    } catch (e) { console.error("Error loading settings", e); }
+    } catch (e) { console.log("Settings load error"); }
 }
 
-// 2. جلب أبرز الحالات
+// جلب الحالات
 async function fetchCases() {
-    const container = document.getElementById('casesContainer');
     try {
         const res = await fetch(`${API_URL}?action=getCases`);
-        const cases = await res.json();
-        container.innerHTML = '';
-        
-        // عرض أول 3 حالات فقط في الواجهة الرئيسية
-        cases.slice(0, 3).forEach(c => {
-            const percent = Math.min((c.Collected / c.Required) * 100, 100);
-            
-            // إذا لم تكن هناك صورة للحالة، نضع صورة افتراضية
-            const imgSource = c.ImageURL ? c.ImageURL : 'default-case.jpg';
-            
-            container.innerHTML += `
-                <div class="case-card">
-                    <img src="${imgSource}" class="case-img" alt="${c.Title}">
-                    <div class="case-info">
-                        <h3 style="color:var(--primary);">${c.Title}</h3>
-                        <div class="progress-bg">
-                            <div class="progress-fill" style="width: ${percent}%"></div>
-                        </div>
-                        <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:0.8rem;">
-                            <span>${Math.round(percent)}%</span>
-                            <span style="color:#666;"><i class="fas fa-map-marker-alt"></i> ${c.Governorate}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        });
+        globalCases = await res.json();
+        renderCases('all');
     } catch (e) {
-        container.innerHTML = '<p>تعذر تحميل الحالات.</p>';
+        document.getElementById('casesList').innerHTML = '<p style="text-align:center;">تعذر الاتصال.</p>';
     }
 }
 
-// 3. دالة معالجة رفع الصور عند إضافة حالة (تستخدم في لوحة تحكم المدير)
-// تُستدعى هذه الدالة عندما يختار المدير صورة من جهازه
-function getBase64(file) {
-   return new Promise((resolve, reject) => {
-     const reader = new FileReader();
-     reader.readAsDataURL(file);
-     reader.onload = () => resolve(reader.result);
-     reader.onerror = error => reject(error);
-   });
+// تصفية الحالات
+function applyFilter(cat, btnElement) {
+    document.querySelectorAll('.chip').forEach(btn => btn.classList.remove('active'));
+    btnElement.classList.add('active');
+    renderCases(cat);
 }
 
-// مثال لكيفية إرسال الحالة مع الصورة للإدارة
-async function submitNewCaseForm() {
-    const fileInput = document.getElementById('caseImageInput').files[0];
-    let imageB64 = null;
-    let imageMime = null;
-    let imageName = null;
+// رسم الحالات
+function renderCases(filter) {
+    const container = document.getElementById('casesList');
+    container.innerHTML = '';
     
-    if (fileInput) {
-        imageB64 = await getBase64(fileInput);
-        imageMime = fileInput.type;
-        imageName = fileInput.name;
+    const filtered = globalCases.filter(c => filter === 'all' || c.Category === filter);
+    
+    if(filtered.length === 0) {
+        container.innerHTML = '<p style="text-align:center;">لا توجد حالات.</p>';
+        return;
     }
-    
-    const payload = {
-        action: 'addCase',
-        title: document.getElementById('caseTitle').value,
-        desc: document.getElementById('caseDesc').value,
-        reqAmount: document.getElementById('caseReq').value,
-        governorate: document.getElementById('caseGov').value,
-        category: document.getElementById('caseCat').value,
-        imageB64: imageB64,
-        imageMime: imageMime,
-        imageName: imageName
-    };
-    
-    // إرسال الـ payload عبر fetch إلى API_URL...
+
+    filtered.forEach(c => {
+        const percent = Math.min((c.Collected / c.Required) * 100, 100);
+        const remaining = c.Required - c.Collected;
+        const isUrgent = c.Category === 'فزعة' || c.Category === 'عاجلة';
+
+        container.innerHTML += `
+            <div class="case-card ${isUrgent ? 'urgent' : ''}">
+                <small style="color:#888;">${c.CaseID} | ${c.Governorate}</small>
+                <h3 style="color:var(--primary); margin:5px 0;">${c.Title}</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${percent}%"></div>
+                </div>
+                <div class="case-stats">
+                    <span style="color:#e63946">متبقي: ${remaining.toLocaleString()} ريال</span>
+                    <span style="color:var(--primary)">${Math.round(percent)}%</span>
+                </div>
+                <a href="https://wa.me/967700000000?text=أرغب بالمساهمة في ${c.CaseID}" target="_blank" 
+                   class="btn-gold w-100" style="display:block; text-align:center; padding:10px; margin-top:12px; text-decoration:none;">
+                   تبرع الآن <i class="fas fa-heart"></i>
+                </a>
+            </div>
+        `;
+    });
 }
 
+// دالة الإرسال المشتركة للنماذج
+async function submitData(payload, btnId, statusId, modalId) {
+    const btn = document.getElementById(btnId);
+    const status = document.getElementById(statusId);
+    const originalText = btn.innerText;
+    
+    btn.disabled = true; btn.innerText = "جاري الإرسال...";
+    
+    try {
+        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+        const result = await res.json();
+        
+        status.style.color = result.status === 'success' ? 'green' : 'red';
+        status.innerText = result.message;
+        
+        if(result.status === 'success' && modalId) {
+            setTimeout(() => { closeModal(modalId); status.innerText = ''; }, 2000);
+        }
+    } catch (e) {
+        status.style.color = 'red'; status.innerText = "خطأ في الاتصال.";
+    } finally {
+        btn.disabled = false; btn.innerText = originalText;
+    }
+}
+
+// أحداث النماذج
+function handleLogin(e) {
+    e.preventDefault();
+    submitData({
+        action: 'login',
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value
+    }, 'submitLoginBtn', 'loginStatus', 'loginModal');
+}
+
+function submitBeneficiary(e) {
+    e.preventDefault();
+    submitData({
+        action: 'submitBeneficiary',
+        title: document.getElementById('benTitle').value,
+        desc: document.getElementById('benDesc').value,
+        reqAmount: document.getElementById('benAmount').value,
+        governorate: document.getElementById('benGov').value,
+        category: document.getElementById('benCat').value
+    }, 'btnSubmitBen', 'benStatus', 'beneficiaryModal');
+}
+
+function submitVolunteer(e) {
+    e.preventDefault();
+    submitData({
+        action: 'submitVolunteer',
+        fullName: document.getElementById('volName').value,
+        phone: document.getElementById('volPhone').value,
+        governorate: document.getElementById('volGov').value,
+        skills: document.getElementById('volSkills').value
+    }, 'btnSubmitVol', 'volStatus', null); // null لأن التطوع صفحة وليس نافذة منبثقة
+}
+
+// بدء التشغيل
 window.onload = () => {
     fetchSettings();
     fetchCases();
