@@ -2,154 +2,158 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#0a2240">
-    <title>مبادرة الأيادي البيضاء</title>
-    
-    <!-- خطوط جوجل -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مبادرة الأيادي البيضاء للتكافل والتمكين</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- مكتبة FontAwesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    
-    <!-- 1. أيقونة التطبيق والمتصفح من قوقل درايف -->
-    <link rel="apple-touch-icon" href="https://drive.google.com/uc?export=view&id=1HZd2tQR6byICk89Z1KOI6NWv5d3F-9Xr">
-    <link rel="icon" href="https://drive.google.com/uc?export=view&id=1HZd2tQR6byICk89Z1KOI6NWv5d3F-9Xr" type="image/png">
 </head>
 <body>
-    <div id="app-container">
-        <!-- الشريط العلوي -->
-        <header class="app-header">
-            <div class="logo-container">
-                <!-- 2. الشعار الرئيسي للموقع من قوقل درايف -->
-                <img src="https://drive.google.com/uc?export=view&id=1HZd2tQR6byICk89Z1KOI6NWv5d3F-9Xr" alt="شعار الأيادي البيضاء" class="logo-img">
-                <div class="header-titles">
-                    <h1>الأيادي البيضاء</h1>
-                    <small>نصل بالعطاء إلى مستحقيه</small>
-                </div>
-            </div>
-            <button class="icon-btn" onclick="openModal('loginModal')">⚙️ الإدارة</button>
-        </header>
 
-        <main class="app-content">
-            <!-- قسم التعريف بالمبادرة -->
-            <section class="about-section">
-                <h2 class="section-title">من نحن</h2>
-                <div class="about-card">
-                    <p><strong>الرؤية:</strong> مجتمع متكافل تصل فيه المساعدة إلى مستحقها بكرامة وشفافية وثقة.</p>
-                    <p><strong>الرسالة:</strong> استقبال الحالات الإنسانية والتحقق منها وربطها بالداعمين، وإيصال الدعم بشفافية تحفظ كرامة المستفيد.</p>
-                    <hr>
-                    <p style="text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-top: 10px;">
-                        إشراف رئيسة المبادرة: <strong>أ. بلقيس محمد</strong>
-                    </p>
-                </div>
-            </section>
-
-            <!-- حسابات الإيداع -->
-            <section class="bank-accounts">
-                <h2 class="section-title">حسابات التبرع المعتمدة</h2>
-                <div class="accounts-grid">
-                    <div class="account-card">
-                        <h4>بنك الكريمي</h4>
-                        <p>رقم الحساب: 123456789</p>
-                    </div>
-                    <div class="account-card">
-                        <h4>جوالي / النجم</h4>
-                        <p>رقم المحفظة: 770000000</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- أزرار الإجراءات السريعة -->
-            <div class="action-buttons">
-                <button class="btn-primary" onclick="openModal('beneficiaryModal')">📝 طلب مساعدة (مستفيد)</button>
-                <button class="btn-secondary" onclick="openModal('volunteerModal')">🤝 انضم كمتطوع</button>
-            </div>
-
-            <!-- تصفية الحالات -->
-            <div class="filter-chips">
-                <button class="chip active" onclick="applyFilter('all', this)">الكل</button>
-                <button class="chip" onclick="applyFilter('فزعة', this)">🚨 فزعة</button>
-                <button class="chip" onclick="applyFilter('مرضية', this)">💊 مرضية</button>
-                <button class="chip" onclick="applyFilter('أيتام', this)">👨‍👩‍👧 أيتام</button>
-            </div>
-
-            <!-- عرض الحالات -->
-            <section class="priority-cases">
-                <h2 class="section-title">حالات قيد الإغلاق</h2>
-                <div id="casesList" class="cases-list">
-                    <div class="loading-spinner">جاري مزامنة الحالات...</div>
-                </div>
-            </section>
-        </main>
-    </div>
-
-    <!-- نافذة تسجيل الدخول -->
-    <div id="loginModal" class="modal-overlay">
-        <div class="modal-surface">
-            <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
-            <h3>بوابة الفريق</h3>
-            <form id="loginForm" onsubmit="handleLogin(event)">
-                <input type="text" id="username" class="modern-input" placeholder="اسم المستخدم" required>
-                <input type="password" id="password" class="modern-input" placeholder="كلمة المرور" required>
-                <button type="submit" class="btn-primary" id="submitLoginBtn">دخول</button>
-            </form>
-            <p id="loginStatus" class="status-msg"></p>
+    <!-- الشريط العلوي المصغر -->
+    <div class="top-bar">
+        <div class="social-icons">
+            <i class="fab fa-twitter"></i>
+            <i class="fab fa-facebook"></i>
+            <i class="fab fa-telegram"></i>
+            <i class="fab fa-whatsapp"></i>
+        </div>
+        <div class="top-text">معاً ... نصنع فرقاً في حياة المحتاجين</div>
+        <div class="top-buttons">
+            <button class="btn-outline-gold"><i class="fas fa-users"></i> انضم كمتطوع</button>
+            <button class="btn-outline-gold" onclick="openLogin()"><i class="fas fa-lock"></i> دخول الإدارة</button>
         </div>
     </div>
 
-    <!-- نافذة طلب مستفيد -->
-    <div id="beneficiaryModal" class="modal-overlay">
-        <div class="modal-surface">
-            <span class="close-btn" onclick="closeModal('beneficiaryModal')">&times;</span>
-            <h3>تقديم طلب مساعدة</h3>
-            <p style="font-size: 0.8rem; color: var(--danger); margin-bottom: 10px;">الطلب يخضع للتحقق الميداني الصارم</p>
-            <form id="beneficiaryForm" onsubmit="submitBeneficiary(event)">
-                <input type="text" id="benTitle" class="modern-input" placeholder="نوع الاحتياج (مثال: عملية جراحية)" required>
-                <textarea id="benDesc" class="modern-input" placeholder="شرح مبسط للحالة" rows="3" required></textarea>
-                <input type="number" id="benAmount" class="modern-input" placeholder="المبلغ التقريبي المطلوب (ريال)" required>
-                <select id="benGov" class="modern-input" required>
-                    <option value="">اختر المحافظة...</option>
-                    <option value="مأرب">مأرب</option>
-                    <option value="تعز">تعز</option>
-                </select>
-                <select id="benCat" class="modern-input" required>
-                    <option value="">تصنيف الحالة...</option>
-                    <option value="مرضية">مرضية</option>
-                    <option value="معسرة">أسرة معسرة</option>
-                    <option value="أيتام">أيتام</option>
-                </select>
-                <button type="submit" class="btn-primary" id="btnSubmitBen">إرسال الطلب للإدارة</button>
-            </form>
-            <p id="benStatus" class="status-msg"></p>
+    <!-- شريط التنقل (Navbar) -->
+    <nav class="navbar">
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="ابحث عن حالة أو خدمة...">
         </div>
-    </div>
-
-    <!-- نافذة التطوع -->
-    <div id="volunteerModal" class="modal-overlay">
-        <div class="modal-surface">
-            <span class="close-btn" onclick="closeModal('volunteerModal')">&times;</span>
-            <h3>استمارة التطوع</h3>
-            <form id="volunteerForm" onsubmit="submitVolunteer(event)">
-                <input type="text" id="volName" class="modern-input" placeholder="الاسم الرباعي" required>
-                <input type="tel" id="volPhone" class="modern-input" placeholder="رقم الواتساب" required>
-                <select id="volGov" class="modern-input" required>
-                    <option value="">المحافظة التي تقيم بها...</option>
-                    <option value="مأرب">مأرب</option>
-                    <option value="تعز">تعز</option>
-                </select>
-                <input type="text" id="volSkills" class="modern-input" placeholder="أبرز المهارات (تصوير، بحث ميداني...)" required>
-                <button type="submit" class="btn-secondary" id="btnSubmitVol">تقديم الطلب</button>
-            </form>
-            <p id="volStatus" class="status-msg"></p>
+        <ul class="nav-links">
+            <li class="active"><a href="#">الرئيسية</a></li>
+            <li><a href="#">من نحن</a></li>
+            <li><a href="#">برامجنا</a></li>
+            <li><a href="#">الحالات</a></li>
+            <li><a href="#">التمكين الاقتصادي</a></li>
+            <li><a href="#">الشركاء</a></li>
+        </ul>
+        <div class="logo-area">
+            <img src="logo.png" alt="الشعار">
         </div>
-    </div>
+    </nav>
 
-    <script src="app.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
-        }
-    </script>
+    <!-- القسم الترحيبي (Hero) -->
+    <section class="hero-section" id="dynamicHeroBg">
+        <div class="hero-content">
+            <h1>مبادرة الأيادي البيضاء</h1>
+            <h2 style="color: var(--accent);">للتكافل والتمكين</h2>
+            <p>نصل إلى المحتاج... ونوصل الخير إلى مستحقه</p>
+            <small>مبادرة مجتمعية إنسانية غير ربحية، تعمل في جميع محافظات اليمن، تبدأ من مقرها الرئيسي في مأرب، وتنفذ برامجها عبر شبكة متطوعين وشركاء موثوقين.</small>
+            <div class="leader-name">رئيسة المبادرة<br><strong>أ. بلقيس محمد</strong></div>
+        </div>
+        <!-- خريطة اليمن كصورة ديناميكية -->
+        <img src="" id="dynamicMapImg" class="yemen-map" alt="خريطة">
+    </section>
+
+    <!-- شريط الإحصائيات -->
+    <section class="stats-bar">
+        <div class="stat-item">
+            <i class="fas fa-users"></i>
+            <h3>42</h3><p>متطوعاً</p>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-handshake"></i>
+            <h3>18</h3><p>شريكاً</p>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-check-circle"></i>
+            <h3>29</h3><p>حالة مكتملة</p>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-file-invoice-dollar"></i>
+            <h3>38</h3><p>حالة قيد التمويل</p>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-coins"></i>
+            <h3>4,250,000</h3><p>إجمالي التبرعات (ريال)</p>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-bullseye"></i>
+            <h3>+150</h3><p>حالة مستهدفة</p>
+        </div>
+        <div class="stat-buttons">
+            <button class="btn-solid-gold">تبرع الآن <i class="fas fa-heart"></i></button>
+            <button class="btn-outline-white">تصفح الحالات <i class="fas fa-file-alt"></i></button>
+        </div>
+    </section>
+
+    <!-- الشبكة الرئيسية (3 أعمدة) -->
+    <section class="main-grid-container">
+        
+        <!-- العمود الأيمن (معاً نحقق المزيد) -->
+        <div class="column promo-col">
+            <h3 class="col-title">معاً نحقق المزيد</h3>
+            <p>ساهم في دعم الحالات الإنسانية والمشاريع التنموية</p>
+            <button class="btn-solid-gold w-100 mb-10">تبرع الآن <i class="fas fa-heart"></i></button>
+            <img src="" id="dynamicPromoImg" class="promo-img">
+        </div>
+
+        <!-- العمود الأوسط (عن المبادرة والانضمام) -->
+        <div class="column about-col">
+            <div class="about-card">
+                <div>
+                    <h3 class="col-title">عن المبادرة</h3>
+                    <p>الأيادي البيضاء هي مبادرة إنسانية وطنية تسعى إلى تخفيف معاناة المحتاجين عبر إدارة الحالات بشفافية...</p>
+                    <a href="#" class="read-more">المزيد عن المبادرة <i class="fas fa-arrow-left"></i></a>
+                </div>
+                <img src="" id="dynamicAboutImg" class="about-img">
+            </div>
+            
+            <div class="join-card">
+                <div>
+                    <h3 class="col-title">الانضمام إلى المبادرة</h3>
+                    <button class="btn-solid-navy">انضم كمتطوع <i class="fas fa-users"></i></button>
+                </div>
+                <ul class="join-list">
+                    <li><i class="fas fa-user-check"></i> شارك بوقتك ومهاراتك</li>
+                    <li><i class="fas fa-bullhorn"></i> كن صوتاً للخير</li>
+                    <li><i class="fas fa-seedling"></i> اصنع فرقاً حقيقياً</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- العمود الأيسر (خدماتنا) -->
+        <div class="column services-col">
+            <h3 class="col-title">خدماتنا</h3>
+            <div class="services-grid">
+                <div class="srv-item"><i class="fas fa-gift"></i> كسوة العيد</div>
+                <div class="srv-item"><i class="fas fa-home"></i> دفء وأمان</div>
+                <div class="srv-item"><i class="fas fa-heartbeat"></i> شفاء</div>
+                <div class="srv-item"><i class="fas fa-hands-helping"></i> حالة واحتياج</div>
+                <div class="srv-item"><i class="fas fa-chart-line"></i> مشاريع مدرة</div>
+                <div class="srv-item"><i class="fas fa-bell"></i> عون الطوارئ</div>
+                <div class="srv-item"><i class="fas fa-star"></i> تمكين</div>
+            </div>
+            <a href="#" class="read-more block-center mt-10">جميع البرامج <i class="fas fa-arrow-left"></i></a>
+        </div>
+
+    </section>
+
+    <!-- قسم أبرز الحالات (مربوط بقاعدة البيانات) -->
+    <section class="cases-section">
+        <div class="section-header">
+            <h3 class="col-title">أبرز الحالات</h3>
+            <a href="#" class="read-more">عرض جميع الحالات <i class="fas fa-arrow-left"></i></a>
+        </div>
+        <div class="cases-carousel" id="casesContainer">
+            <p>جاري تحميل الحالات...</p>
+            <!-- سيتم حقن الحالات هنا -->
+        </div>
+    </section>
+
+    <script src="main.js"></script>
 </body>
 </html>
