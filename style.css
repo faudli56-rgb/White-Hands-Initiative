@@ -439,3 +439,45 @@ body { background-color: var(--bg-light); overflow-x: hidden; }
     .hero-buttons-new { flex-direction: column; }
     .stats-bar-new { grid-template-columns: repeat(2, 1fr); display: grid; }
 }
+/* الفوتر الجديد الاحترافي */
+.footer-new {
+    background-color: #0b2342;
+    color: #fff;
+    padding: 40px 5% 20px;
+    margin-top: 50px;
+}
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 30px;
+}
+.footer-logo-section img {
+    height: 70px;
+    background: #fff;
+    padding: 5px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+.footer-logo-section p { color: #D4AF37; font-weight: bold; }
+.footer-contact-section h4 {
+    color: #D4AF37;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+.footer-contact-section p {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.footer-contact-section i { color: #D4AF37; }
+.footer-bottom { text-align: center; font-size: 0.85rem; color: #aaa; }
+
+@media (max-width: 768px) {
+    .footer-content { flex-direction: column; text-align: center; }
+    .footer-contact-section p { justify-content: center; }
+}
