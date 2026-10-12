@@ -149,6 +149,7 @@ async function submitBeneficiary(e) {
         category: document.getElementById('benCat').value
     };
     
+    // فحص ذكي: إذا لم يكن هناك إنترنت، احفظ البيانات في الجوال محلياً!
     if (!navigator.onLine) {
         saveOfflineCase(payload);
         closeModal('beneficiaryModal');
@@ -156,90 +157,9 @@ async function submitBeneficiary(e) {
         return;
     }
     
+    // إذا كان هناك إنترنت، أرسلها للخادم طبيعياً
     submitData(payload, 'btnSubmitBen', 'benStatus', 'beneficiaryModal');
 }
 
 function saveOfflineCase(payload) {
-    let offlineCases = JSON.parse(localStorage.getItem('offlineCases') || '[]');
-    offlineCases.push(payload);
-    localStorage.setItem('offlineCases', JSON.stringify(offlineCases));
-    checkOfflineStatus();
-    alert("⚠️ لا يوجد اتصال بالإنترنت حالياً!\nتم حفظ بيانات الحالة في هاتفك، وسيتم رفعها تلقائياً عند عودة الشبكة.");
-}
-
-function checkOfflineStatus() {
-    let offlineCases = JSON.parse(localStorage.getItem('offlineCases') || '[]');
-    const syncBtn = document.getElementById('syncBtn');
-    if (offlineCases.length > 0) {
-        syncBtn.style.display = 'block';
-        document.getElementById('offlineCount').innerText = offlineCases.length;
-    } else {
-        syncBtn.style.display = 'none';
-    }
-}
-
-async function syncOfflineData() {
-    let offlineCases = JSON.parse(localStorage.getItem('offlineCases') || '[]');
-    if (offlineCases.length === 0) return;
-    
-    if (!navigator.onLine) { alert("لا يزال الاتصال مقطوعاً. يرجى الاتصال بالإنترنت أولاً."); return; }
-    
-    const btn = document.getElementById('syncBtn');
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الرفع...';
-    
-    try {
-        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'syncOfflineCases', cases: offlineCases }) });
-        const result = await res.json();
-        if (result.status === 'success') {
-            localStorage.removeItem('offlineCases');
-            checkOfflineStatus();
-            alert("✅ تمت مزامنة جميع الحالات المحفوظة مع قاعدة البيانات بنجاح!");
-            fetchCases(); 
-        }
-    } catch (e) { alert("فشلت المزامنة، يرجى المحاولة لاحقاً."); } 
-    finally { btn.innerHTML = '<i class="fas fa-sync fa-spin"></i> مزامنة الحالات (<span id="offlineCount">0</span>)'; }
-}
-
-// ==========================================
-// 6. الميزات المتقدمة: الشفافية وتتبع التبرع
-// ==========================================
-async function handleTrackDonation(e) {
-    e.preventDefault();
-    const btn = document.getElementById('btnTrack');
-    const resultsDiv = document.getElementById('trackResults');
-    const searchKey = document.getElementById('trackInput').value;
-    
-    btn.disabled = true; btn.innerHTML = "جاري البحث <i class='fas fa-spinner fa-spin'></i>";
-    resultsDiv.innerHTML = '';
-    
-    try {
-        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'trackDonation', searchKey: searchKey }) });
-        const result = await res.json();
-        
-        if (result.status === 'success' && result.data.length > 0) {
-            result.data.forEach(d => {
-                resultsDiv.innerHTML += `
-                    <div style="background:#f4f7f6; padding:15px; border-radius:8px; margin-bottom:10px; border-right:4px solid #2a9d8f;">
-                        <strong style="color:#0a2240; font-size:1.1rem;">المبلغ المساهم به: ${d.Amount} ريال</strong><br>
-                        <small style="color:#666;">تم توجيهه للحالة رقم: ${d.CaseID}</small><br>
-                        <small style="color:#666;">طريقة الدفع: ${d.Method}</small>
-                    </div>
-                `;
-            });
-        } else {
-            resultsDiv.innerHTML = '<p style="color:#e63946; text-align:center; font-weight:bold;">لم يتم العثور على سجلات مطابقة لهذا الرقم.</p>';
-        }
-    } catch (e) { resultsDiv.innerHTML = '<p style="color:#e63946; text-align:center;">خطأ في الاتصال بالسيرفر.</p>'; } 
-    finally { btn.disabled = false; btn.innerHTML = 'بحث في السجلات <i class="fas fa-search"></i>'; }
-}
-
-// ==========================================
-// 7. أحداث بدء التشغيل
-// ==========================================
-window.onload = () => { 
-    fetchSettings(); 
-    fetchBanks(); 
-    fetchCases(); 
-    checkOfflineStatus(); 
-};
-window.addEventListener('online', syncOfflineData);
+    let offline
