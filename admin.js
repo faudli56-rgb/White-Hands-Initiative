@@ -1,4 +1,4 @@
-// ⚠️ ضع الرابط الجديد لـ Google Apps Script بعد عمل (إصدار جديد)
+// ⚠️ تأكد من وضع الرابط الجديد لـ Google Apps Script هنا
 const API_URL = "https://script.google.com/macros/s/AKfycbyy2Q69kwtZKExOtOMAetY67KLLd3W5WdGunwNtUQdVYyL7NIZp-zQNruxlK4txMZF0kw/exec";
 
 let adminData = null;
@@ -27,27 +27,42 @@ async function fetchAdminData() {
     document.getElementById('loading').style.display = 'flex';
     try {
         const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'getAdminData' }) });
-        adminData = await res.json();
+        const result = await res.json();
         
-        populateDashboard();
-        populateCasesTable();
-        populateVolunteersTable();
-        populateUsersTable();
-        populateSettingsForm();
-        populateTasksSection(); // الدالة الجديدة للمهام
+        // حماية في حال رفض السيرفر الطلب
+        if (result.status === 'error') {
+            alert("خطأ من السيرفر: " + result.message);
+            return;
+        }
+
+        adminData = result;
         
-    } catch (e) { alert("حدث خطأ أثناء جلب البيانات."); } 
-    finally { document.getElementById('loading').style.display = 'none'; }
+        // تعبئة البيانات
+        if(adminData.cases) populateDashboard();
+        if(adminData.cases) populateCasesTable();
+        if(adminData.volunteers) populateVolunteersTable();
+        if(adminData.users) populateUsersTable();
+        if(adminData.settings) populateSettingsForm();
+        populateTasksSection(); 
+        
+    } catch (e) { 
+        console.error(e);
+        alert("حدث خطأ أثناء جلب البيانات. قد يكون هناك مشكلة في الاتصال بقاعدة البيانات."); 
+    } finally { 
+        // إخفاء شاشة التحميل في كل الأحوال (حتى لو حدث خطأ)
+        document.getElementById('loading').style.display = 'none'; 
+    }
 }
 
 function populateDashboard() {
     document.getElementById('statTotalCases').innerText = adminData.cases.length;
     document.getElementById('statPendingCases').innerText = adminData.cases.filter(c => c.Status === 'مسودة').length;
-    document.getElementById('statVolunteers').innerText = adminData.volunteers.length;
+    document.getElementById('statVolunteers').innerText = adminData.volunteers ? adminData.volunteers.length : 0;
 }
 
 function populateCasesTable() {
     const tbody = document.getElementById('casesTableBody');
+    if(!tbody) return;
     tbody.innerHTML = '';
     
     [...adminData.cases].reverse().forEach(c => {
@@ -80,31 +95,36 @@ function populateCasesTable() {
 }
 
 function populateTasksSection() {
-    // تعبئة قوائم الإسناد المنسدلة
     const caseSelect = document.getElementById('taskCaseId');
     const volSelect = document.getElementById('taskVolunteer');
-    caseSelect.innerHTML = '<option value="">اختر الحالة...</option>';
-    volSelect.innerHTML = '<option value="">اختر المتطوع...</option>';
+    if(caseSelect) caseSelect.innerHTML = '<option value="">اختر الحالة...</option>';
+    if(volSelect) volSelect.innerHTML = '<option value="">اختر المتطوع...</option>';
     
-    adminData.cases.filter(c => c.Status !== 'مغلقة').forEach(c => {
-        caseSelect.innerHTML += `<option value="${c.CaseID}">${c.CaseID} - ${c.Title}</option>`;
-    });
-    adminData.volunteers.forEach(v => {
-        volSelect.innerHTML += `<option value="${v.FullName}">${v.FullName} (${v.Governorate})</option>`;
-    });
-
-    // تعبئة جدول المهام السابقة
-    const tbody = document.getElementById('tasksTableBody');
-    tbody.innerHTML = '';
-    if(adminData.tasks) {
-        [...adminData.tasks].reverse().forEach(t => {
-            tbody.innerHTML += `<tr><td>${t.CaseID}</td><td>${t.VolunteerName}</td><td>${t.TaskDesc}</td><td>${t.Date.split('T')[0]}</td></tr>`;
+    if (adminData.cases && caseSelect) {
+        adminData.cases.filter(c => c.Status !== 'مغلقة').forEach(c => {
+            caseSelect.innerHTML += `<option value="${c.CaseID}">${c.CaseID} - ${c.Title}</option>`;
         });
+    }
+    if (adminData.volunteers && volSelect) {
+        adminData.volunteers.forEach(v => {
+            volSelect.innerHTML += `<option value="${v.FullName}">${v.FullName} (${v.Governorate})</option>`;
+        });
+    }
+
+    const tbody = document.getElementById('tasksTableBody');
+    if(tbody) {
+        tbody.innerHTML = '';
+        if(adminData.tasks) {
+            [...adminData.tasks].reverse().forEach(t => {
+                tbody.innerHTML += `<tr><td>${t.CaseID}</td><td>${t.VolunteerName}</td><td>${t.TaskDesc}</td><td>${t.Date.split('T')[0]}</td></tr>`;
+            });
+        }
     }
 }
 
 function populateVolunteersTable() {
     const tbody = document.getElementById('volunteersTableBody');
+    if(!tbody || !adminData.volunteers) return;
     tbody.innerHTML = '';
     [...adminData.volunteers].reverse().forEach(v => {
         tbody.innerHTML += `<tr><td><strong>${v.FullName}</strong></td><td>${v.Governorate}</td><td><a href="https://wa.me/${v.Phone}" target="_blank" style="color:#25D366;"><i class="fab fa-whatsapp"></i> ${v.Phone}</a></td><td>${v.Skills}</td></tr>`;
@@ -113,6 +133,7 @@ function populateVolunteersTable() {
 
 function populateUsersTable() {
     const tbody = document.getElementById('usersTableBody');
+    if(!tbody || !adminData.users) return;
     tbody.innerHTML = '';
     adminData.users.forEach(u => {
         tbody.innerHTML += `<tr><td>${u.FullName}</td><td>${u.Username}</td><td><span class="status-badge status-pub">${u.Role}</span></td></tr>`;
@@ -120,23 +141,22 @@ function populateUsersTable() {
 }
 
 function populateSettingsForm() {
+    if(!adminData.settings) return;
     const s = {};
     adminData.settings.forEach(item => s[item.SettingKey] = item.SettingValue);
-    if(s.Facebook) document.getElementById('setFacebook').value = s.Facebook;
-    if(s.Whatsapp) document.getElementById('setWhatsapp').value = s.Whatsapp;
-    if(s.Twitter) document.getElementById('setTwitter').value = s.Twitter;
-    if(s.HeroBgImage) document.getElementById('setHeroBg').value = s.HeroBgImage;
+    if(document.getElementById('setFacebook')) document.getElementById('setFacebook').value = s.Facebook || '';
+    if(document.getElementById('setWhatsapp')) document.getElementById('setWhatsapp').value = s.Whatsapp || '';
+    if(document.getElementById('setTwitter')) document.getElementById('setTwitter').value = s.Twitter || '';
+    if(document.getElementById('setHeroBg')) document.getElementById('setHeroBg').value = s.HeroBgImage || '';
 }
 
 // ================= العمليات التفاعلية ================= //
 
 async function changeCaseStatus(caseId, newStatus) {
     let reportDetails = '';
-    
-    // إذا كان الإجراء هو إغلاق الحالة، نطلب تفاصيل التقرير لتوليد الـ PDF
     if(newStatus === 'مغلقة') {
         reportDetails = prompt("اكتب ملخصاً لعملية الصرف ليتم اعتماده آلياً في تقرير الشفافية (PDF):", "تم استلام التبرعات بالكامل وشراء الاحتياجات وتسليمها للمستفيد.");
-        if (reportDetails === null) return; // تم الإلغاء
+        if (reportDetails === null) return; 
     } else {
         if(!confirm(`تأكيد تغيير حالة الملف إلى: ${newStatus}؟`)) return;
     }
@@ -148,7 +168,7 @@ async function changeCaseStatus(caseId, newStatus) {
         const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
         const result = await res.json();
         if(result.status === 'success') fetchAdminData();
-        else alert(result.message);
+        else { alert(result.message); document.getElementById('loading').style.display = 'none'; }
     } catch(e) { alert("حدث خطأ"); document.getElementById('loading').style.display = 'none'; }
 }
 
@@ -220,3 +240,6 @@ async function saveSettings(e) {
     } catch(e) { msg.style.color = 'red'; msg.innerText = "حدث خطأ"; }
     finally { btn.disabled = false; btn.innerText = "حفظ الإعدادات"; }
 }
+
+function logout() { sessionStorage.clear(); window.location.href = 'index.html'; }
+window.onload = checkAuth;
