@@ -50,7 +50,7 @@
         <button class="admin-btn mobile-only" onclick="openModal('loginModal')"><i class="fas fa-user-shield"></i></button>
     </nav>
 
-    <!-- القائمة الجانبية (الجوال) - لم تتغير وظائفها -->
+    <!-- القائمة الجانبية (الجوال) -->
     <div id="sideMenu" class="side-menu mobile-only">
         <button class="close-menu" onclick="toggleMenu()">&times;</button>
         <div class="menu-content">
@@ -58,6 +58,7 @@
             <a href="#" onclick="switchPage('aboutPage'); toggleMenu();"><i class="fas fa-info-circle"></i> من نحن</a>
             <a href="#" onclick="switchPage('programsPage'); toggleMenu();"><i class="fas fa-th-large"></i> برامجنا</a>
             <a href="#" onclick="switchPage('casesPage'); toggleMenu();"><i class="fas fa-heart"></i> الحالات</a>
+            <a href="#" onclick="switchPage('reportsPage'); toggleMenu();"><i class="fas fa-file-pdf"></i> التقارير</a>
             <a href="#" onclick="switchPage('partnersPage'); toggleMenu();"><i class="fas fa-handshake"></i> الشركاء</a>
             <hr style="border-color: rgba(255,255,255,0.1); margin: 10px 20px;">
             <a href="#" onclick="openModal('trackModal'); toggleMenu();"><i class="fas fa-search-dollar"></i> أين أتبرع؟</a>
@@ -69,12 +70,11 @@
     <!-- ================= الحاوية الرئيسية للتبويبات ================= -->
     <main id="mainContent">
 
-        <!-- 1. تبويب الرئيسية (المعاد تصميمه) -->
+        <!-- 1. تبويب الرئيسية -->
         <section id="homePage" class="page-section active">
-            
             <!-- القسم الرئيسي Hero -->
             <div class="hero-section-new" id="heroTarget">
-                <!-- الصورة تعمل كخلفية مطلقة -->
+                <!-- الصورة كخلفية -->
                 <img src="https://lh3.googleusercontent.com/d/1rsNExrOWHYuS_xzTuRN7XVz-Dwi7SKkc" class="hero-bg-img" alt="خلفية المبادرة">
                 <div class="hero-gradient-overlay"></div>
                 
@@ -88,17 +88,11 @@
                     <div class="hero-info-new">
                         <div class="info-item">
                             <div class="icon-box"><i class="fas fa-user-tie"></i></div>
-                            <div>
-                                <small>رئيسة المبادرة</small>
-                                <strong>أ. بلقيس محمد</strong>
-                            </div>
+                            <div><small>رئيسة المبادرة</small><strong>أ. بلقيس محمد</strong></div>
                         </div>
                         <div class="info-item">
                             <div class="icon-box"><i class="fas fa-map-marker-alt"></i></div>
-                            <div>
-                                <small>المقر الرئيسي</small>
-                                <strong>مأرب – اليمن</strong>
-                            </div>
+                            <div><small>المقر الرئيسي</small><strong>مأرب – اليمن</strong></div>
                         </div>
                     </div>
 
@@ -109,66 +103,42 @@
                 </div>
             </div>
 
-           <!-- 6. تبويب التقارير (الجديد) -->
-        <section id="reportsPage" class="page-section" style="padding:50px 5%; background: var(--bg-light);">
-            <div class="section-header" style="text-align: center; margin-bottom: 30px;">
-                <h2 class="col-title" style="font-size:2rem;">تقارير الحالات المغلقة</h2>
-                <p style="color:#666;">شفافية العطاء.. تصفح التقارير النهائية والموثقة للحالات التي تم تمويلها بالكامل وإغلاقها.</p>
-            </div>
-            <div class="cases-carousel" id="reportsContainer">
-                <div style="text-align:center; width:100%;"><i class="fas fa-spinner fa-spin"></i> جاري تحميل التقارير...</div>
-            </div>
+            <!-- الفوتر الاحترافي (يظهر في الرئيسية فقط) -->
+            <footer class="footer-new">
+                <div class="footer-content">
+                    <div class="footer-logo-section">
+                        <img src="https://lh3.googleusercontent.com/d/1yJMvphz5YGvgjUG9HNCAVkKWSBXyyPUC" alt="شعار المبادرة">
+                        <p>معاً ... نصنع فرقاً في حياة المحتاجين</p>
+                    </div>
+                    <div class="footer-contact-section">
+                        <h4>تواصل معنا</h4>
+                        <p><i class="fas fa-map-marker-alt"></i> المقر الرئيسي: مأرب - اليمن</p>
+                        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/967718078843" target="_blank" style="color:white; text-decoration:none;">718078843</a></p>
+                        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/967718779795" target="_blank" style="color:white; text-decoration:none;">718779795</a></p>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>جميع الحقوق محفوظة &copy; 2026 مبادرة الأيادي البيضاء للتكافل والتمكين</p>
+                </div>
+            </footer>
         </section>
 
-    </main>
-    <!-- ================= نهاية الحاوية الرئيسية ================= -->
-
-    <!-- الفوتر الاحترافي (بديل الأرقام الوهمية) -->
-    <footer class="footer-new">
-        <div class="footer-content">
-            <div class="footer-logo-section">
-                <img src="https://lh3.googleusercontent.com/d/1yJMvphz5YGvgjUG9HNCAVkKWSBXyyPUC" alt="شعار المبادرة">
-                <p>معاً ... نصنع فرقاً في حياة المحتاجين</p>
-            </div>
-            <div class="footer-contact-section">
-                <h4>تواصل معنا</h4>
-                <p><i class="fas fa-map-marker-alt"></i> المقر الرئيسي: مأرب - اليمن</p>
-                <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/967718078843" target="_blank" style="color:white; text-decoration:none;">718078843</a></p>
-                <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/967718779795" target="_blank" style="color:white; text-decoration:none;">718779795</a></p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>جميع الحقوق محفوظة &copy; 2026 مبادرة الأيادي البيضاء للتكافل والتمكين</p>
-        </div>
-    </footer>
-        </section>
-
-        <!-- 2. تبويب من نحن (بدون أي مساس بالبيانات) -->
+        <!-- 2. تبويب من نحن -->
         <section id="aboutPage" class="page-section about-section">
             <div class="about-container">
                 <h2 class="col-title" style="font-size:2rem; text-align:center; display:block;">من نحن</h2>
                 <h4 style="text-align:center; color:var(--primary); margin-bottom:20px;">مبادرة الأيادي البيضاء للتكافل والتمكين <br> <span style="color:var(--accent);">نصل بالعطاء إلى مستحقيه</span></h4>
                 <p>نحن مبادرة مجتمعية ناشئة، انطلقت من إيماننا بأن العطاء مسؤولية مشتركة، وأن لكل إنسان دورًا يستطيع من خلاله أن يصنع فرقًا في حياة الآخرين...</p>
-                
                 <div class="about-grid">
                     <div class="about-box"><i class="fas fa-eye"></i><h3>رؤيتنا</h3><p>أن نكون نموذجًا مجتمعيًا يُسهم في نشر ثقافة التكافل والتطوع...</p></div>
                     <div class="about-box"><i class="fas fa-bullseye"></i><h3>رسالتنا</h3><p>العمل على بناء مبادرة مجتمعية قائمة على التعاون والتطوع...</p></div>
                 </div>
-
-                <h3 class="sub-title">أهدافنا</h3>
+                <h3 class="col-title">أهدافنا</h3>
                 <ul class="about-list">
                     <li>نشر ثقافة التكافل والتراحم والتعاون بين أفراد المجتمع.</li>
                     <li>استقطاب المتطوعين وتشجيع المشاركة المجتمعية الفاعلة.</li>
                     <li>العمل على بناء آلية منظمة لاستقبال الاحتياجات الإنسانية.</li>
                 </ul>
-
-                <div class="about-footer">
-                    <div style="text-align: center; margin-top: 20px;">
-                        <p style="font-weight:bold; margin-bottom:15px; color:var(--primary);">للتواصل مع إدارة المبادرة والانضمام إلينا:</p>
-                        <a href="https://wa.me/967718078843" target="_blank" class="btn-solid-gold" style="text-decoration:none; display:inline-block; font-size:1.2rem; margin:5px;"><i class="fab fa-whatsapp"></i> 718078843</a>
-                        <a href="https://wa.me/967718779795" target="_blank" class="btn-outline-white" style="color:var(--primary); border: 2px solid var(--primary); text-decoration:none; display:inline-block; font-size:1.2rem; font-weight:bold; margin:5px;"><i class="fab fa-whatsapp"></i> 718779795</a>
-                    </div>
-                </div>
             </div>
         </section>
 
@@ -183,7 +153,7 @@
             </div>
         </section>
 
-        <!-- 4. تبويب الحالات (الديناميكي) -->
+        <!-- 4. تبويب الحالات -->
         <section id="casesPage" class="page-section cases-section" style="padding-top:40px;">
             <div class="section-header">
                 <h3 class="col-title">الحالات الإنسانية قيد التمويل</h3>
@@ -199,53 +169,79 @@
             </div>
         </section>
 
-        <!-- 5. تبويب الشركاء -->
-        <section id="partnersPage" class="page-section" style="padding:50px 5%; background: var(--bg-light);">
+        <!-- 5. تبويب التقارير (الجديد) -->
+        <section id="reportsPage" class="page-section cases-section" style="padding-top:40px; background: var(--bg-light);">
+            <div class="section-header" style="text-align: center; margin-bottom: 30px; display: block;">
+                <h2 class="col-title" style="font-size:2rem;">تقارير الحالات المغلقة</h2>
+                <p style="color:#666;">شفافية العطاء.. تصفح التقارير النهائية للحالات التي تم تمويلها بالكامل.</p>
+            </div>
+            <div class="cases-carousel" id="reportsContainer">
+                <div style="text-align:center; width:100%;"><i class="fas fa-spinner fa-spin"></i> جاري تحميل التقارير...</div>
+            </div>
+        </section>
+
+        <!-- 6. تبويب الشركاء -->
+        <section id="partnersPage" class="page-section" style="padding:50px 5%;">
             <div class="about-container" style="text-align:center;">
                 <h2 class="col-title" style="font-size:2rem;">شركاء النجاح</h2>
                 <i class="fas fa-handshake" style="font-size: 4rem; color: var(--accent); margin: 20px 0;"></i>
                 <p style="font-size: 1.2rem; font-weight:bold; color:var(--primary);">"شراكتنا... أثرٌ يبقى ونماءٌ يستمر"</p>
-                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                    <button class="btn-solid-navy" style="font-size: 1.1rem; padding: 15px 30px;" onclick="openPartnerModal('شريك داعم دائم')"><i class="fas fa-star"></i> الانضمام كشريك داعم دائم</button>
-                    <button class="btn-solid-gold" style="font-size: 1.1rem; padding: 15px 30px;" onclick="openPartnerModal('شريك دعم حالة')"><i class="fas fa-hand-holding-medical"></i> الانضمام كشريك دعم حالة</button>
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top:20px;">
+                    <button class="btn-solid-navy" style="padding: 15px 30px;" onclick="openPartnerModal('شريك داعم دائم')"><i class="fas fa-star"></i> الانضمام كشريك دائم</button>
+                    <button class="btn-solid-gold" style="padding: 15px 30px;" onclick="openPartnerModal('شريك دعم حالة')"><i class="fas fa-heart"></i> الانضمام كشريك حالة</button>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <!-- شريط التنقل السفلي للجوال -->
+    <!-- شريط التنقل السفلي للجوال (النظيف والخالي من حقل الإرفاق) -->
     <nav class="bottom-nav mobile-only">
         <button class="nav-item active" onclick="switchPage('homePage', this)"><i class="fas fa-home"></i><span>الرئيسية</span></button>
         <button class="nav-item" onclick="switchPage('casesPage', this)"><i class="fas fa-heart"></i><span>الحالات</span></button>
         <button class="nav-item" onclick="openModal('donateModal')"><i class="fas fa-donate"></i><span>تبرع</span></button>
-        <button class="nav-item" onclick="openModal('beneficiaryModal')"><i class="fas fa-edit"></i><span>طلب مساعدة</span></button>
-        <label style="display:block; text-align:right; font-weight:bold; color:var(--primary); margin-bottom:5px;">المرفقات (صور للحالة أو تقرير PDF)</label>
-                <input type="file" id="benFile" accept="image/*,.pdf" style="margin-bottom:15px;">
+        <button class="nav-item" onclick="openModal('beneficiaryModal')"><i class="fas fa-edit"></i><span>مساعدة</span></button>
     </nav>
 
-    <!-- ================= النوافذ المنبثقة (Modals) الأساسية ================= -->
+    <!-- ================= النوافذ المنبثقة ================= -->
     <div id="partnerModal" class="modal-overlay">
-        <div class="modal-card"><span class="close-modal" onclick="closeModal('partnerModal')">&times;</span><i class="fas fa-handshake modal-icon"></i><h3 class="col-title" id="partnerModalTitle">طلب انضمام كشريك</h3><form class="popup-form" onsubmit="submitPartner(event)"><input type="hidden" id="partnerType"><input type="text" id="partnerName" placeholder="اسم الجهة / الشركة / الفرد" required><input type="tel" id="partnerPhone" placeholder="رقم الهاتف للتواصل" required><select id="partnerGov" required><option value="">المحافظة / المقر...</option><option value="مأرب">مأرب</option><option value="تعز">تعز</option><option value="أخرى">محافظة أخرى</option></select><button type="submit" class="btn-solid-navy w-100" id="btnSubmitPartner">إرسال الطلب</button><p id="partnerStatus" class="status-msg"></p></form></div>
+        <div class="modal-card"><span class="close-modal" onclick="closeModal('partnerModal')">&times;</span><i class="fas fa-handshake modal-icon"></i><h3 class="col-title" id="partnerModalTitle">طلب انضمام</h3><form class="popup-form" onsubmit="submitPartner(event)"><input type="hidden" id="partnerType"><input type="text" id="partnerName" placeholder="الاسم / الجهة" required><input type="tel" id="partnerPhone" placeholder="رقم التواصل" required><select id="partnerGov" required><option value="">المحافظة...</option><option value="مأرب">مأرب</option><option value="تعز">تعز</option><option value="أخرى">أخرى</option></select><button type="submit" class="btn-solid-navy w-100" id="btnSubmitPartner">إرسال الطلب</button><p id="partnerStatus" class="status-msg"></p></form></div>
     </div>
+    
     <div id="volunteerModal" class="modal-overlay">
-        <div class="modal-card"><span class="close-modal" onclick="closeModal('volunteerModal')">&times;</span><i class="fas fa-hands-helping modal-icon"></i><h3 class="col-title">استمارة التطوع</h3><form class="popup-form" onsubmit="submitVolunteer(event)"><input type="text" id="volName" placeholder="الاسم الرباعي" required><input type="tel" id="volPhone" placeholder="رقم الواتساب" required><select id="volGov" required><option value="">المحافظة...</option><option value="مأرب">مأرب</option><option value="تعز">تعز</option></select><input type="text" id="volSkills" placeholder="المهارات (تصوير، بحث، تصميم...)" required><button type="submit" class="btn-solid-gold w-100" id="btnSubmitVol">تقديم طلب التطوع</button><p id="volStatus" class="status-msg"></p></form></div>
+        <div class="modal-card"><span class="close-modal" onclick="closeModal('volunteerModal')">&times;</span><i class="fas fa-hands-helping modal-icon"></i><h3 class="col-title">استمارة التطوع</h3><form class="popup-form" onsubmit="submitVolunteer(event)"><input type="text" id="volName" placeholder="الاسم الرباعي" required><input type="tel" id="volPhone" placeholder="رقم الواتساب" required><select id="volGov" required><option value="">المحافظة...</option><option value="مأرب">مأرب</option><option value="تعز">تعز</option></select><input type="text" id="volSkills" placeholder="المهارات (تصوير، بحث، تصميم...)" required><button type="submit" class="btn-solid-gold w-100" id="btnSubmitVol">تقديم طلب</button><p id="volStatus" class="status-msg"></p></form></div>
     </div>
+
     <div id="donateModal" class="modal-overlay">
-        <div class="modal-card"><span class="close-modal" onclick="closeModal('donateModal')">&times;</span><i class="fas fa-donate modal-icon" style="color:#2a9d8f;"></i><h3 class="col-title">حساباتنا البنكية للتبرع</h3><div id="banksContainer" style="text-align:right; margin-bottom:20px; max-height:200px; overflow-y:auto;"><p style="text-align:center;"><i class="fas fa-spinner fa-spin"></i> جاري جلب الحسابات...</p></div><a href="https://wa.me/967718078843" target="_blank" class="btn-solid-gold w-100" style="display:block; text-decoration:none;"><i class="fab fa-whatsapp"></i> للإشعار بالتحويل 718078843</a></div>
+        <div class="modal-card"><span class="close-modal" onclick="closeModal('donateModal')">&times;</span><i class="fas fa-donate modal-icon" style="color:#2a9d8f;"></i><h3 class="col-title">حسابات التبرع</h3><div id="banksContainer" style="text-align:right; margin-bottom:20px; max-height:200px; overflow-y:auto;"><p><i class="fas fa-spinner fa-spin"></i> جاري الجلب...</p></div><a href="https://wa.me/967718078843" target="_blank" class="btn-solid-gold w-100" style="display:block; text-decoration:none;"><i class="fab fa-whatsapp"></i> للإشعار 718078843</a></div>
     </div>
+
     <div id="beneficiaryModal" class="modal-overlay">
-        <div class="modal-card"><span class="close-modal" onclick="closeModal('beneficiaryModal')">&times;</span><i class="fas fa-file-signature modal-icon"></i><h3 class="col-title">طلب مساعدة</h3><form class="popup-form" onsubmit="submitBeneficiary(event)"><input type="text" id="benTitle" placeholder="نوع الاحتياج (علاج، كسوة، الخ)" required><input type="number" id="benAmount" placeholder="المبلغ التقريبي (ريال)" required><select id="benGov" required><option value="">اختر المحافظة...</option><option value="مأرب">مأرب</option><option value="تعز">تعز</option></select><select id="benCat" required><option value="">التصنيف...</option><option value="مرضية">مرضية</option><option value="أيتام">أيتام</option><option value="معسرة">معسرة</option></select><textarea id="benDesc" placeholder="شرح تفصيلي للحالة ووضع الأسرة..." rows="3" required></textarea><button type="submit" class="btn-solid-gold w-100" id="btnSubmitBen">إرسال الطلب للإدارة</button><p id="benStatus" class="status-msg"></p></form></div>
+        <div class="modal-card"><span class="close-modal" onclick="closeModal('beneficiaryModal')">&times;</span><i class="fas fa-file-signature modal-icon"></i><h3 class="col-title">طلب مساعدة</h3>
+            <form class="popup-form" onsubmit="submitBeneficiary(event)">
+                <input type="text" id="benTitle" placeholder="نوع الاحتياج (علاج، إيجار...)" required>
+                <input type="number" id="benAmount" placeholder="المبلغ التقريبي (ريال)" required>
+                <select id="benGov" required><option value="">المحافظة...</option><option value="مأرب">مأرب</option><option value="تعز">تعز</option></select>
+                <select id="benCat" required><option value="">التصنيف...</option><option value="مرضية">مرضية</option><option value="أيتام">أيتام</option><option value="معسرة">معسرة</option></select>
+                <textarea id="benDesc" placeholder="شرح تفصيلي للحالة..." rows="3" required></textarea>
+                <!-- هنا المكان الصحيح لحقل إرفاق الملفات -->
+                <label style="display:block; text-align:right; font-weight:bold; color:var(--primary); margin-bottom:5px;">المرفقات (صور للحالة أو تقرير PDF)</label>
+                <input type="file" id="benFile" accept="image/*,.pdf" style="margin-bottom:15px;">
+                <button type="submit" class="btn-solid-gold w-100" id="btnSubmitBen">إرسال الطلب للإدارة</button>
+                <p id="benStatus" class="status-msg"></p>
+            </form>
+        </div>
     </div>
+
     <div id="loginModal" class="modal-overlay">
         <div class="modal-card"><span class="close-modal" onclick="closeModal('loginModal')">&times;</span><i class="fas fa-user-shield modal-icon"></i><h3 class="col-title">بوابة الإدارة</h3><form class="popup-form" onsubmit="handleLogin(event)"><input type="text" id="username" placeholder="اسم المستخدم" required><input type="password" id="password" placeholder="كلمة المرور" required><button type="submit" class="btn-solid-navy w-100" id="submitLoginBtn">دخول</button><p id="loginStatus" class="status-msg"></p></form></div>
     </div>
+
     <div id="trackModal" class="modal-overlay">
-        <div class="modal-card"><span class="close-modal" onclick="closeModal('trackModal')">&times;</span><i class="fas fa-search-dollar modal-icon" style="color: #2a9d8f;"></i><h3 class="col-title">أين ذهب تبرعي؟</h3><p style="font-size:0.9rem; margin-bottom:15px; color:#666;">أدخل رقم هاتفك أو رقم السند لتتبع أثر تبرعك بشفافية:</p><form class="popup-form" onsubmit="handleTrackDonation(event)"><input type="text" id="trackInput" placeholder="رقم الهاتف أو السند..." required><button type="submit" class="btn-solid-navy w-100" id="btnTrack">بحث في السجلات <i class="fas fa-search"></i></button><div id="trackResults" style="margin-top:15px; text-align:right; max-height:200px; overflow-y:auto;"></div></form></div>
+        <div class="modal-card"><span class="close-modal" onclick="closeModal('trackModal')">&times;</span><i class="fas fa-search-dollar modal-icon" style="color: #2a9d8f;"></i><h3 class="col-title">تتبع تبرعي</h3><form class="popup-form" onsubmit="handleTrackDonation(event)"><input type="text" id="trackInput" placeholder="رقم الهاتف أو السند..." required><button type="submit" class="btn-solid-navy w-100" id="btnTrack">بحث <i class="fas fa-search"></i></button><div id="trackResults" style="margin-top:15px; text-align:right;"></div></form></div>
     </div>
 
-    <!-- زر المزامنة الذكي (Offline Mode) -->
-    <button id="syncBtn" onclick="syncOfflineData()" style="display:none; position:fixed; bottom:90px; right:20px; background:#e63946; color:white; border:none; padding:15px 20px; border-radius:30px; box-shadow:0 4px 15px rgba(0,0,0,0.3); z-index:1000; font-family:'Cairo'; font-weight:bold; cursor:pointer;"><i class="fas fa-sync fa-spin"></i> مزامنة الحالات (<span id="offlineCount">0</span>)</button>
+    <button id="syncBtn" onclick="syncOfflineData()" style="display:none; position:fixed; bottom:90px; right:20px; background:#e63946; color:white; border:none; padding:15px 20px; border-radius:30px; box-shadow:0 4px 15px rgba(0,0,0,0.3); z-index:1000; font-family:'Cairo'; font-weight:bold; cursor:pointer;"><i class="fas fa-sync fa-spin"></i> مزامنة (<span id="offlineCount">0</span>)</button>
 
     <script src="main.js"></script>
 </body>
