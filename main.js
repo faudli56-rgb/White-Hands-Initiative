@@ -125,16 +125,85 @@ async function handleLogin(e) {
     } catch (e) { status.style.color = 'red'; status.innerText = "خطأ اتصال."; btn.disabled = false; btn.innerText = "دخول"; }
 }
 
+// ==========================================
+// تعديل دالة طلب المساعدة لدعم المرفقات
+// ==========================================
 async function submitBeneficiary(e) {
     e.preventDefault();
+    const btn = document.getElementById('btnSubmitBen');
+    const originalText = btn.innerText;
+    btn.disabled = true; btn.innerText = "جاري تجهيز الطلب والمرفقات...";
+
+    const fileInput = document.getElementById('benFile');
+    let fileData = null;
+    let mimeType = null;
+    let fileName = null;
+
+    // قراءة الملف وتحويله إلى Base64
+    if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        fileName = file.name;
+        mimeType = file.type;
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        await new Promise(resolve => reader.onload = () => {
+            fileData = reader.result.split(',')[1];
+            resolve();
+        });
+    }
+
     const payload = {
         action: 'submitBeneficiary',
         title: document.getElementById('benTitle').value,
         desc: document.getElementById('benDesc').value,
         reqAmount: document.getElementById('benAmount').value,
         governorate: document.getElementById('benGov').value,
-        category: document.getElementById('benCat').value
+        category: document.getElementById('benCat').value,
+        fileData: fileData,
+        mimeType: mimeType,
+        fileName: fileName
     };
+    
+    if (!navigator.onLine) {
+        saveOfflineCase(payload);
+        closeModal('beneficiaryModal');
+        document.getElementById('beneficiaryModal').querySelector('form').reset();
+        btn.disabled = false; btn.innerText = originalText;
+        return;
+    }
+    
+    btn.disabled = false; btn.innerText = originalText;
+    submitData(payload, 'btnSubmitBen', 'benStatus', 'beneficiaryModal');
+}
+
+// ==========================================
+// دالة جلب وعرض تقارير الحالات المغلقة
+// ==========================================
+async function fetchReports() {
+    const container = document.getElementById('reportsContainer');
+    try {
+        const res = await fetch(`${API_URL}?action=getClosedCases`);
+        const reports = await res.json();
+        container.innerHTML = '';
+        if(reports.length === 0) { container.innerHTML = '<div>لا توجد تقارير لحالات مغلقة حتى الآن.</div>'; return; }
+
+        reports.forEach(r => {
+            let reportBtn = r.ReportURL && r.ReportURL.startsWith('http') 
+                ? `<a href="${r.ReportURL}" target="_blank" class="btn-solid-navy" style="display:block; text-align:center; padding:10px; border-radius:8px; text-decoration:none;"><i class="fas fa-file-pdf"></i> عرض التقرير الرسمي</a>`
+                : `<span style="color:#666; font-size:0.9rem;">التقرير قيد الإصدار</span>`;
+                
+            container.innerHTML += `
+                <div class="case-card" style="border-right-color: #2a9d8f;">
+                    <small style="color:#888;">رقم: ${r.CaseID} | ${r.Governorate}</small>
+                    <h3 style="color:var(--primary); margin:5px 0;">${r.Title}</h3>
+                    <p style="color:#2a9d8f; font-weight:bold; margin: 10px 0;">✓ حالة مكتملة ومغلقة</p>
+                    <p style="font-size:0.85rem; color:#555; margin-bottom:15px;">المبلغ المُنفذ: ${Number(r.Collected).toLocaleString()} ريال</p>
+                    ${reportBtn}
+                </div>
+            `;
+        });
+    } catch (e) { container.innerHTML = '<div style="color:red;">تعذر جلب التقارير.</div>'; }
+}
     
     if (!navigator.onLine) {
         saveOfflineCase(payload);
@@ -224,6 +293,7 @@ window.onload = () => {
     fetchSettings(); 
     fetchBanks(); 
     fetchCases(); 
+    fetchReports();
     checkOfflineStatus(); 
 };
 
