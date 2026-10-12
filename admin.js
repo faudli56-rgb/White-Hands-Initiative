@@ -176,11 +176,47 @@ async function handleAssignTask(e) {
 }
 
 async function addUser(e) {
-    // ... [نفس كود دالة addUser السابق دون تغيير للحفاظ على المساحة] ...
-}
-async function saveSettings(e) {
-    // ... [نفس كود دالة saveSettings السابق دون تغيير] ...
+    e.preventDefault();
+    const payload = {
+        action: 'addUser',
+        fullName: document.getElementById('newFullName').value,
+        username: document.getElementById('newUsername').value,
+        password: document.getElementById('newPassword').value,
+        role: document.getElementById('newRole').value,
+        governorate: document.getElementById('newGov').value
+    };
+    const btn = document.getElementById('btnAddUser');
+    const msg = document.getElementById('userStatusMsg');
+    btn.disabled = true; btn.innerText = "جاري الإضافة...";
+    try {
+        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+        const result = await res.json();
+        msg.style.color = result.status === 'success' ? 'green' : 'red';
+        msg.innerText = result.message;
+        if(result.status === 'success') { document.getElementById('addUserForm').reset(); fetchAdminData(); }
+    } catch(e) { msg.style.color = 'red'; msg.innerText = "حدث خطأ"; }
+    finally { btn.disabled = false; btn.innerText = "إضافة المستخدم"; }
 }
 
-function logout() { sessionStorage.clear(); window.location.href = 'index.html'; }
-window.onload = checkAuth;
+async function saveSettings(e) {
+    e.preventDefault();
+    const payload = {
+        action: 'saveSettings',
+        settingsData: {
+            Facebook: document.getElementById('setFacebook').value,
+            Whatsapp: document.getElementById('setWhatsapp').value,
+            Twitter: document.getElementById('setTwitter').value,
+            HeroBgImage: document.getElementById('setHeroBg').value
+        }
+    };
+    const btn = document.getElementById('btnSaveSettings');
+    const msg = document.getElementById('settingsStatusMsg');
+    btn.disabled = true; btn.innerText = "جاري الحفظ...";
+    try {
+        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+        const result = await res.json();
+        msg.style.color = result.status === 'success' ? 'green' : 'red';
+        msg.innerText = result.message;
+    } catch(e) { msg.style.color = 'red'; msg.innerText = "حدث خطأ"; }
+    finally { btn.disabled = false; btn.innerText = "حفظ الإعدادات"; }
+}
