@@ -303,3 +303,139 @@ body { background-color: var(--bg-light); overflow-x: hidden; }
     font-size: 2.2rem;
     font-weight: 900;
 }
+/* =======================================================
+   تحديث الواجهة الرئيسية (التصميم المؤسسي الجديد)
+   ======================================================= */
+
+/* 1. الشريط العلوي الأزرق الداكن */
+.top-bar-new {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #0b2342;
+    padding: 8px 5%;
+    font-family: 'Cairo', sans-serif;
+}
+.social-icons-new { display: flex; gap: 15px; }
+.social-icons-new a { color: #fff; font-size: 1.1rem; transition: 0.3s; }
+.social-icons-new a:hover { color: #D4AF37; }
+.top-text-new { color: #D4AF37; font-weight: 700; font-size: 0.95rem; }
+.top-buttons-new { display: flex; gap: 10px; }
+.top-buttons-new button {
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 6px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+.btn-top-outline { background: transparent; border: 1px solid #D4AF37; color: #fff; }
+.btn-top-outline:hover { background: rgba(212, 175, 55, 0.1); }
+.btn-top-solid { background: #D4AF37; border: 1px solid #D4AF37; color: #0b2342; }
+.btn-top-solid:hover { background: #c29d2f; }
+
+/* 2. شريط التنقل (الأبيض) */
+.navbar-new {
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 5%;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+.logo-area-new img { height: 75px; object-fit: contain; }
+.nav-links-new { display: flex; gap: 10px; list-style: none; }
+.nav-links-new li a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #f4f6f8;
+    color: #333;
+    padding: 8px 18px;
+    border-radius: 25px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: 0.3s;
+}
+.nav-links-new li a.active, .nav-links-new li a:hover { background: #D4AF37; color: #0b2342; }
+
+/* 3. القسم الرئيسي (Hero) والبطاقة */
+.hero-section-new {
+    position: relative;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    padding: 40px 5%;
+    overflow: hidden;
+}
+.hero-bg-img {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+.hero-gradient-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to left, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 45%, rgba(255,255,255,0) 100%);
+    z-index: 1;
+}
+.hero-card-new {
+    position: relative;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    max-width: 520px;
+    border-top: 4px solid #D4AF37;
+}
+.badge-gold {
+    background: #D4AF37; color: #0b2342;
+    padding: 4px 12px; border-radius: 15px;
+    font-size: 0.85rem; font-weight: 800; display: inline-block; margin-bottom: 15px;
+}
+.hero-card-new h1 { color: #0b2342; font-size: 2.4rem; font-weight: 900; line-height: 1.2; margin-bottom: 5px; }
+.hero-subtitle-new { color: #D4AF37; font-size: 1.8rem; font-weight: 800; margin-bottom: 15px; }
+.hero-slogan-new { font-size: 1.2rem; font-weight: 800; color: #333; margin-bottom: 15px; }
+.hero-desc-new { font-size: 0.95rem; color: #555; line-height: 1.7; margin-bottom: 25px; }
+.hero-info-new { display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px; }
+.info-item { display: flex; align-items: center; gap: 15px; }
+.icon-box { background: #f4f6f8; color: #0b2342; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; }
+.info-item small { display: block; color: #777; font-size: 0.8rem; }
+.info-item strong { color: #0b2342; font-size: 0.95rem; }
+.hero-buttons-new { display: flex; gap: 10px; }
+.btn-outline-navy { background: transparent; border: 2px solid #0b2342; color: #0b2342; font-family: 'Cairo'; font-weight: bold; padding: 10px; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+.btn-outline-navy:hover { background: #0b2342; color: white; }
+
+/* 4. شريط الإحصائيات (الأزرق الداكن) */
+.stats-bar-new {
+    background-color: #0b2342;
+    padding: 40px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.stat-item-new { text-align: center; flex: 1; min-width: 130px; }
+.stat-item-new i { color: #D4AF37; font-size: 2.2rem; margin-bottom: 15px; }
+.stat-item-new h3 { color: #fff; font-size: 2rem; font-weight: 900; margin: 0 0 5px 0; }
+.stat-item-new p { color: #cbd5e1; font-size: 0.85rem; line-height: 1.4; margin: 0; }
+
+/* 5. التوافق مع الجوال */
+@media (max-width: 768px) {
+    .top-bar-new { flex-direction: column; gap: 10px; padding: 15px 5%; }
+    .top-text-new { text-align: center; }
+    .top-buttons-new { flex-wrap: wrap; justify-content: center; }
+    .navbar-new { flex-direction: row-reverse; } /* الشعار والقائمة بالجوال */
+    .hero-gradient-overlay { background: rgba(255,255,255,0.85); }
+    .hero-card-new { max-width: 100%; border-top: none; box-shadow: none; padding: 25px 15px; background: transparent; }
+    .hero-buttons-new { flex-direction: column; }
+    .stats-bar-new { grid-template-columns: repeat(2, 1fr); display: grid; }
+}
