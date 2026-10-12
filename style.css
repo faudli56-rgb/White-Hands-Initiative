@@ -159,3 +159,69 @@ body { background-color: var(--bg-light); overflow-x: hidden; }
 /* تعديلات الصورة الطولية والشعار لتظهر بقوة */
 .hero-side-img { width: 40%; border-radius: 20px; object-fit: cover; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 5; }
 .logo-area img { height: 60px; max-width: 200px; object-fit: contain; }
+/* =========================================
+   تعديلات الوزن الفني (الشعار والصورة الرئيسية)
+   ========================================= */
+
+/* 1. تكبير الشعار ليكون مميزاً وواضحاً */
+.logo-area img {
+    height: 100px !important; /* تكبير الارتفاع */
+    max-width: 280px !important;
+    object-fit: contain;
+    transition: 0.3s ease;
+}
+
+/* توسيع شريط التنقل العلوي ليحتوي الشعار الكبير براحة */
+.navbar {
+    min-height: 110px !important;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+/* 2. وزن الصورة الرئيسية لتملأ المكان بالكامل */
+.hero-section {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 600px; /* تحديد طول الواجهة */
+    padding: 0 !important; /* إزالة الفراغات لتمتد الصورة للحواف */
+    overflow: hidden;
+    background: #fdfdfd;
+}
+
+/* قسم النصوص ليبقى فوق الصورة بشكل مرتب */
+.hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 40px 5%;
+    max-width: 650px;
+}
+
+/* جعل الصورة ممتدة بالكامل (تغطي الشاشة) */
+.hero-side-img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100% !important; /* العرض بالكامل */
+    height: 100% !important; /* الطول بالكامل */
+    object-fit: cover !important; /* يضمن عدم تشوه الصورة وتمططها */
+    border-radius: 0 !important; /* إزالة الحواف الدائرية */
+    box-shadow: none !important;
+    z-index: 1;
+    opacity: 0.15; /* جعل الصورة كخلفية مدمجة (يمكنك زيادة الرقم 0.5 لتغميقها) */
+}
+
+/* إذا أردت أن تكون الصورة في النصف الأيسر فقط ولكن ممتدة من أعلى لأسفل، استخدم هذا الكود بدلاً من الكود السابق الخاص بـ hero-side-img:
+.hero-side-img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 55% !important; 
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: 0 !important;
+    z-index: 1;
+    -webkit-mask-image: linear-gradient(to right, black 70%, transparent 100%);
+}
+*/
