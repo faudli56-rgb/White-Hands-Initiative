@@ -11,7 +11,7 @@
 </head>
 <body>
 
-    <!-- الشريط العلوي الجديد -->
+    <!-- الشريط العلوي -->
     <div class="top-bar-new desktop-only">
         <div class="social-icons-new">
             <a href="https://wa.me/967718078843" target="_blank"><i class="fab fa-whatsapp"></i></a>
@@ -29,11 +29,10 @@
         </div>
     </div>
 
-    <!-- شريط التنقل الرئيسي الجديد -->
+    <!-- شريط التنقل -->
     <nav class="navbar-new">
         <button class="menu-btn mobile-only" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
         
-        <!-- القائمة في أقصى اليمين -->
         <ul class="nav-links-new desktop-only" id="mainNav">
             <li><a href="#" class="active" onclick="switchPage('homePage', this)"><i class="fas fa-home"></i> الرئيسية</a></li>
             <li><a href="#" onclick="switchPage('aboutPage', this)"><i class="fas fa-users"></i> من نحن</a></li>
@@ -43,7 +42,6 @@
             <li><a href="#" onclick="switchPage('partnersPage', this)"><i class="fas fa-handshake"></i> الشركاء</a></li>
         </ul>
         
-        <!-- الشعار في أقصى اليسار -->
         <div class="logo-area-new">
             <img src="https://lh3.googleusercontent.com/d/1yJMvphz5YGvgjUG9HNCAVkKWSBXyyPUC" alt="شعار المبادرة">
         </div>
@@ -67,14 +65,10 @@
         </div>
     </div>
 
-    <!-- ================= الحاوية الرئيسية للتبويبات ================= -->
     <main id="mainContent">
-
         <!-- 1. تبويب الرئيسية -->
         <section id="homePage" class="page-section active">
-            <!-- القسم الرئيسي Hero -->
             <div class="hero-section-new" id="heroTarget">
-                <!-- الصورة كخلفية -->
                 <img src="https://lh3.googleusercontent.com/d/1rsNExrOWHYuS_xzTuRN7XVz-Dwi7SKkc" class="hero-bg-img" alt="خلفية المبادرة">
                 <div class="hero-gradient-overlay"></div>
                 
@@ -96,14 +90,19 @@
                         </div>
                     </div>
 
-                    <div class="hero-buttons-new">
-                        <button class="btn-solid-gold w-100" onclick="openModal('volunteerModal')"><i class="fas fa-users"></i> انضم متطوعاً</button>
-                        <button class="btn-outline-navy w-100" onclick="switchPage('casesPage')"><i class="fas fa-play-circle"></i> تصفح الحالات</button>
+                    <!-- أزرار الواجهة (تمت إضافة زر تبرع الآن مع القلب النابض) -->
+                    <div class="hero-buttons-new" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn-solid-gold w-100" style="flex: 1;" onclick="openModal('donateModal')">
+                            <i class="fas fa-heart beat-icon"></i> تبرع الآن
+                        </button>
+                        <button class="btn-outline-navy w-100" style="flex: 1;" onclick="switchPage('casesPage')">
+                            <i class="fas fa-play-circle"></i> تصفح الحالات
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- الفوتر الاحترافي (يظهر في الرئيسية فقط) -->
+            <!-- الفوتر الاحترافي -->
             <footer class="footer-new">
                 <div class="footer-content">
                     <div class="footer-logo-section">
@@ -169,7 +168,7 @@
             </div>
         </section>
 
-        <!-- 5. تبويب التقارير (الجديد) -->
+        <!-- 5. تبويب التقارير -->
         <section id="reportsPage" class="page-section cases-section" style="padding-top:40px; background: var(--bg-light);">
             <div class="section-header" style="text-align: center; margin-bottom: 30px; display: block;">
                 <h2 class="col-title" style="font-size:2rem;">تقارير الحالات المغلقة</h2>
@@ -195,7 +194,6 @@
 
     </main>
 
-    <!-- شريط التنقل السفلي للجوال (النظيف والخالي من حقل الإرفاق) -->
     <nav class="bottom-nav mobile-only">
         <button class="nav-item active" onclick="switchPage('homePage', this)"><i class="fas fa-home"></i><span>الرئيسية</span></button>
         <button class="nav-item" onclick="switchPage('casesPage', this)"><i class="fas fa-heart"></i><span>الحالات</span></button>
@@ -212,8 +210,17 @@
         <div class="modal-card"><span class="close-modal" onclick="closeModal('volunteerModal')">&times;</span><i class="fas fa-hands-helping modal-icon"></i><h3 class="col-title">استمارة التطوع</h3><form class="popup-form" onsubmit="submitVolunteer(event)"><input type="text" id="volName" placeholder="الاسم الرباعي" required><input type="tel" id="volPhone" placeholder="رقم الواتساب" required><select id="volGov" required><option value="">المحافظة...</option><option value="مأرب">مأرب</option><option value="تعز">تعز</option></select><input type="text" id="volSkills" placeholder="المهارات (تصوير، بحث، تصميم...)" required><button type="submit" class="btn-solid-gold w-100" id="btnSubmitVol">تقديم طلب</button><p id="volStatus" class="status-msg"></p></form></div>
     </div>
 
+    <!-- نافذة التبرع المصححة -->
     <div id="donateModal" class="modal-overlay">
-        <div class="modal-card"><span class="close-modal" onclick="closeModal('donateModal')">&times;</span><i class="fas fa-donate modal-icon" style="color:#2a9d8f;"></i><h3 class="col-title">حسابات التبرع</h3><div id="banksContainer"></div> href="https://wa.me/967718078843" target="_blank" class="btn-solid-gold w-100" style="display:block; text-decoration:none;"><i class="fab fa-whatsapp"></i> للإشعار 718078843</a></div>
+        <div class="modal-card">
+            <span class="close-modal" onclick="closeModal('donateModal')">&times;</span>
+            <i class="fas fa-donate modal-icon" style="color:#2a9d8f;"></i>
+            <h3 class="col-title">حسابات التبرع</h3>
+            <div id="banksContainer"></div> 
+            <a href="https://wa.me/967718078843" target="_blank" class="btn-solid-gold w-100" style="display:block; text-decoration:none; margin-top: 15px;">
+                <i class="fab fa-whatsapp"></i> للإشعار بالتحويل 718078843
+            </a>
+        </div>
     </div>
 
     <div id="beneficiaryModal" class="modal-overlay">
@@ -224,7 +231,6 @@
                 <select id="benGov" required><option value="">المحافظة...</option><option value="مأرب">مأرب</option><option value="تعز">تعز</option></select>
                 <select id="benCat" required><option value="">التصنيف...</option><option value="مرضية">مرضية</option><option value="أيتام">أيتام</option><option value="معسرة">معسرة</option></select>
                 <textarea id="benDesc" placeholder="شرح تفصيلي للحالة..." rows="3" required></textarea>
-                <!-- هنا المكان الصحيح لحقل إرفاق الملفات -->
                 <label style="display:block; text-align:right; font-weight:bold; color:var(--primary); margin-bottom:5px;">المرفقات (صور للحالة أو تقرير PDF)</label>
                 <input type="file" id="benFile" accept="image/*,.pdf" style="margin-bottom:15px;">
                 <button type="submit" class="btn-solid-gold w-100" id="btnSubmitBen">إرسال الطلب للإدارة</button>
