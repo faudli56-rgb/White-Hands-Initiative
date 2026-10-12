@@ -129,3 +129,66 @@ body { background-color: var(--bg-light); overflow-x: hidden; }
     .footer-contact-section p { justify-content: center; }
     .filter-chips { overflow-x: auto; scrollbar-width: none; padding-bottom: 5px; }
 }
+/* =========================================
+   تنسيق حسابات التبرع (كروت / مربعات احترافية)
+   ========================================= */
+#banksContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* عرض الحسابات في عمودين (مربعات) */
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.bank-item {
+    background: #fff;
+    padding: 20px 10px;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    transition: 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.bank-item:hover {
+    border-color: var(--accent); /* يضيء بالذهبي عند التأشير */
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.15);
+}
+
+.bank-item strong { 
+    display: block; 
+    color: var(--primary); 
+    font-size: 1.15rem; 
+    font-weight: 900;
+    margin-bottom: 5px;
+}
+
+.bank-item small { 
+    color: #666; 
+    font-size: 0.85rem; 
+    display: block; 
+    margin-bottom: 15px;
+}
+
+.bank-item span { 
+    background: #f4f6f8; 
+    color: var(--primary); 
+    padding: 10px; 
+    border-radius: 8px; 
+    font-weight: 900; 
+    font-family: monospace; 
+    font-size: 1rem; 
+    width: 100%; 
+    border: 1px dashed #cbd5e1; 
+    user-select: all; /* يسمح للمتبرع بنسخ الرقم بضغطة واحدة */
+    cursor: copy;
+}
+
+/* في الجوالات الصغيرة، نجعلها مربعاً واحداً تحت الآخر لتكون واضحة ومقروءة */
+@media (max-width: 480px) {
+    #banksContainer { grid-template-columns: 1fr; }
+}
