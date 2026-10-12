@@ -109,16 +109,49 @@ async function submitData(payload, btnId, statusId, modalId) {
     }
 }
 
-// أحداث النماذج
-function handleLogin(e) {
+// دالة تسجيل الدخول المحدثة للتوجه إلى لوحة الإدارة
+async function handleLogin(e) {
     e.preventDefault();
-    submitData({
+    const btn = document.getElementById('submitLoginBtn');
+    const status = document.getElementById('loginStatus');
+    const originalText = btn.innerHTML;
+    
+    btn.disabled = true; 
+    btn.innerText = "جاري التحقق...";
+    
+    const payload = {
         action: 'login',
         username: document.getElementById('username').value,
         password: document.getElementById('password').value
-    }, 'submitLoginBtn', 'loginStatus', 'loginModal');
-}
+    };
 
+    try {
+        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+        const result = await res.json();
+        
+        status.style.color = result.status === 'success' ? 'green' : 'red';
+        
+        if(result.status === 'success') {
+            status.innerText = "تم الدخول بنجاح! جاري تحويلك للوحة الإدارة...";
+            // حفظ بيانات المستخدم في المتصفح (الجلسة)
+            sessionStorage.setItem('userRole', result.role);
+            sessionStorage.setItem('userName', result.name);
+            
+            // الانتقال الفعلي لصفحة الإدارة بعد ثانية ونصف
+            setTimeout(() => {
+                window.location.href = 'admin.html';
+            }, 1500);
+        } else {
+            status.innerText = result.message;
+        }
+    } catch (e) {
+        status.style.color = 'red'; 
+        status.innerText = "خطأ في الاتصال بالخادم.";
+    } finally {
+        btn.disabled = false; 
+        if(status.style.color === 'red') btn.innerHTML = originalText;
+    }
+}
 function submitBeneficiary(e) {
     e.preventDefault();
     submitData({
