@@ -22,6 +22,7 @@
         <div class="top-buttons">
             <button class="btn-outline-gold" onclick="openModal('beneficiaryModal')"><i class="fas fa-hand-holding-heart"></i> طلب مساعدة</button>
             <button class="btn-outline-gold" onclick="openModal('volunteerModal')"><i class="fas fa-users"></i> انضم كمتطوع</button>
+            <button class="btn-outline-gold" onclick="openModal('trackModal')" style="background: var(--accent); color: var(--primary);"><i class="fas fa-search-dollar"></i> أين تبرعي؟</button>
             <button class="btn-outline-gold" onclick="openModal('loginModal')"><i class="fas fa-lock"></i> دخول الإدارة</button>
         </div>
     </div>
@@ -267,5 +268,24 @@
     </div>
 
     <script src="main.js"></script>
+  <!-- نافذة الشفافية: تتبع التبرع -->
+    <div id="trackModal" class="modal-overlay">
+        <div class="modal-card">
+            <span class="close-modal" onclick="closeModal('trackModal')">&times;</span>
+            <i class="fas fa-search-dollar modal-icon" style="color: #2a9d8f;"></i>
+            <h3 class="col-title">أين ذهب تبرعي؟</h3>
+            <p style="font-size:0.9rem; margin-bottom:15px; color:#666;">أدخل رقم هاتفك (الذي تواصلت به معنا) أو رقم الحوالة لتتبع أثر تبرعك بشفافية:</p>
+            <form class="popup-form" onsubmit="handleTrackDonation(event)">
+                <input type="text" id="trackInput" placeholder="رقم الهاتف أو السند..." required>
+                <button type="submit" class="btn-solid-navy w-100" id="btnTrack">بحث في السجلات <i class="fas fa-search"></i></button>
+                <div id="trackResults" style="margin-top:15px; text-align:right; max-height:200px; overflow-y:auto;"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- زر المزامنة الذكي (Offline Mode) يظهر تلقائياً للمتطوعين إذا انقطع الإنترنت -->
+    <button id="syncBtn" onclick="syncOfflineData()" style="display:none; position:fixed; bottom:90px; right:20px; background:#e63946; color:white; border:none; padding:15px 20px; border-radius:30px; box-shadow:0 4px 15px rgba(0,0,0,0.3); z-index:1000; font-family:'Cairo'; font-weight:bold; cursor:pointer;">
+        <i class="fas fa-sync fa-spin"></i> مزامنة الحالات (<span id="offlineCount">0</span>)
+    </button>
 </body>
 </html>
