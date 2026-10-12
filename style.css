@@ -151,3 +151,11 @@ body { background-color: var(--bg-light); overflow-x: hidden; }
     .about-container { padding: 20px; }
     .about-grid { grid-template-columns: 1fr; }
 }
+/* نظام تبويبات الصفحة الواحدة (SPA) */
+.page-section { display: none; animation: fadeIn 0.4s ease-in-out; }
+.page-section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+/* تعديلات الصورة الطولية والشعار لتظهر بقوة */
+.hero-side-img { width: 40%; border-radius: 20px; object-fit: cover; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 5; }
+.logo-area img { height: 60px; max-width: 200px; object-fit: contain; }
