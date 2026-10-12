@@ -10,15 +10,15 @@
 </head>
 <body>
 
-    <!-- القائمة الجانبية -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <h2>الأيادي البيضاء</h2>
-            <small>بوابة الإدارة</small>
+            <small>بوابة الإدارة المتقدمة</small>
         </div>
         <ul class="nav-links">
             <li class="active" onclick="showSection('dashboard', this)"><i class="fas fa-chart-pie"></i> لوحة القيادة</li>
             <li onclick="showSection('cases-section', this)"><i class="fas fa-file-signature"></i> إدارة الحالات</li>
+            <li onclick="showSection('tasks-section', this)"><i class="fas fa-tasks"></i> إدارة المهام</li>
             <li onclick="showSection('volunteers-section', this)"><i class="fas fa-hands-helping"></i> المتطوعين</li>
             <li onclick="showSection('users-section', this)"><i class="fas fa-users-cog"></i> فريق العمل</li>
             <li onclick="showSection('settings-section', this)"><i class="fas fa-cogs"></i> الإعدادات</li>
@@ -26,9 +26,7 @@
         <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
     </aside>
 
-    <!-- المحتوى الرئيسي -->
     <main class="main-content">
-        <!-- الشريط العلوي -->
         <header class="top-header">
             <button class="mobile-menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
             <div class="user-info">
@@ -47,29 +45,20 @@
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
-                    <div class="stat-details">
-                        <h3 id="statTotalCases">0</h3>
-                        <p>إجمالي الحالات</p>
-                    </div>
+                    <div class="stat-details"><h3 id="statTotalCases">0</h3><p>إجمالي الحالات</p></div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon" style="background:#e63946;"><i class="fas fa-clock"></i></div>
-                    <div class="stat-details">
-                        <h3 id="statPendingCases">0</h3>
-                        <p>حالات قيد المراجعة (مسودة)</p>
-                    </div>
+                    <div class="stat-details"><h3 id="statPendingCases">0</h3><p>حالات قيد المراجعة</p></div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon" style="background:#2a9d8f;"><i class="fas fa-hands"></i></div>
-                    <div class="stat-details">
-                        <h3 id="statVolunteers">0</h3>
-                        <p>طلبات التطوع</p>
-                    </div>
+                    <div class="stat-details"><h3 id="statVolunteers">0</h3><p>طلبات التطوع</p></div>
                 </div>
             </div>
         </section>
 
-        <!-- 2. إدارة الحالات -->
+        <!-- 2. إدارة الحالات (محدثة مع روابط درايف) -->
         <section id="cases-section" class="content-section">
             <h2 class="section-title">إدارة طلبات المساعدة</h2>
             <div class="table-responsive">
@@ -79,8 +68,8 @@
                             <th>الرقم</th>
                             <th>النوع / العنوان</th>
                             <th>المبلغ</th>
-                            <th>المحافظة</th>
                             <th>الحالة الحالية</th>
+                            <th>الأرشيف (درايف)</th>
                             <th>إجراء</th>
                         </tr>
                     </thead>
@@ -89,96 +78,91 @@
             </div>
         </section>
 
-        <!-- 3. إدارة المتطوعين -->
+        <!-- 3. إدارة المهام (قسم جديد) -->
+        <section id="tasks-section" class="content-section">
+            <h2 class="section-title">إسناد المهام للميدان</h2>
+            <div class="form-card">
+                <h3>إسناد مهمة جديدة</h3>
+                <form id="assignTaskForm" onsubmit="handleAssignTask(event)">
+                    <div class="form-grid">
+                        <select id="taskCaseId" required><option value="">اختر الحالة...</option></select>
+                        <select id="taskVolunteer" required><option value="">اختر المتطوع...</option></select>
+                        <input type="text" id="taskDesc" placeholder="وصف المهمة (مثال: زيارة ميدانية لتقييم الوضع)" required>
+                    </div>
+                    <button type="submit" class="btn-primary" id="btnAssignTask">إسناد المهمة</button>
+                    <p id="taskStatusMsg" class="msg"></p>
+                </form>
+            </div>
+            <div class="table-responsive mt-20">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>رقم الحالة</th>
+                            <th>المتطوع المكلّف</th>
+                            <th>المهمة</th>
+                            <th>تاريخ الإسناد</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tasksTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 4. المتطوعين -->
         <section id="volunteers-section" class="content-section">
             <h2 class="section-title">قائمة المتطوعين</h2>
             <div class="table-responsive">
                 <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>الاسم</th>
-                            <th>المحافظة</th>
-                            <th>رقم الواتساب</th>
-                            <th>المهارات</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>الاسم</th><th>المحافظة</th><th>رقم الواتساب</th><th>المهارات</th></tr></thead>
                     <tbody id="volunteersTableBody"></tbody>
                 </table>
             </div>
         </section>
 
-        <!-- 4. فريق العمل (المستخدمين) -->
+        <!-- 5. فريق العمل -->
         <section id="users-section" class="content-section">
             <h2 class="section-title">إدارة صلاحيات الفريق</h2>
-            
             <div class="form-card">
-                <h3>إضافة عضو جديد للفريق</h3>
                 <form id="addUserForm" onsubmit="addUser(event)">
                     <div class="form-grid">
                         <input type="text" id="newFullName" placeholder="الاسم الكامل" required>
-                        <input type="text" id="newUsername" placeholder="اسم المستخدم (للدخول)" required>
+                        <input type="text" id="newUsername" placeholder="اسم المستخدم" required>
                         <input type="password" id="newPassword" placeholder="كلمة المرور" required>
                         <select id="newRole" required>
                             <option value="">اختر الصلاحية...</option>
-                            <option value="مدير">مدير (صلاحيات كاملة)</option>
+                            <option value="مدير">مدير</option>
                             <option value="قائد فريق">قائد فريق</option>
-                            <option value="متطوع">متطوع</option>
                         </select>
-                        <select id="newGov" required>
-                            <option value="مأرب">مأرب</option>
-                            <option value="تعز">تعز</option>
-                            <option value="الكل">الكل</option>
-                        </select>
+                        <select id="newGov" required><option value="مأرب">مأرب</option><option value="تعز">تعز</option></select>
                     </div>
                     <button type="submit" class="btn-primary" id="btnAddUser">إضافة المستخدم</button>
                     <p id="userStatusMsg" class="msg"></p>
                 </form>
             </div>
-
             <div class="table-responsive mt-20">
                 <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>الاسم</th>
-                            <th>اسم المستخدم</th>
-                            <th>الصلاحية</th>
-                            <th>المحافظة</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>الاسم</th><th>اسم المستخدم</th><th>الصلاحية</th></tr></thead>
                     <tbody id="usersTableBody"></tbody>
                 </table>
             </div>
         </section>
 
-        <!-- 5. الإعدادات -->
+        <!-- 6. الإعدادات -->
         <section id="settings-section" class="content-section">
-            <h2 class="section-title">إعدادات الموقع والروابط</h2>
+            <h2 class="section-title">إعدادات الموقع</h2>
             <div class="form-card">
                 <form id="settingsForm" onsubmit="saveSettings(event)">
                     <div class="form-grid">
-                        <div>
-                            <label>رابط الفيسبوك</label>
-                            <input type="url" id="setFacebook" placeholder="https://facebook.com/...">
-                        </div>
-                        <div>
-                            <label>رابط الواتساب (للتواصل)</label>
-                            <input type="url" id="setWhatsapp" placeholder="https://wa.me/...">
-                        </div>
-                        <div>
-                            <label>رابط تويتر / X</label>
-                            <input type="url" id="setTwitter" placeholder="https://x.com/...">
-                        </div>
-                        <div>
-                            <label>رابط صورة الخلفية (رابط مباشر)</label>
-                            <input type="url" id="setHeroBg" placeholder="https://...">
-                        </div>
+                        <div><label>رابط الفيسبوك</label><input type="url" id="setFacebook"></div>
+                        <div><label>رابط الواتساب (للتواصل)</label><input type="url" id="setWhatsapp"></div>
+                        <div><label>رابط تويتر / X</label><input type="url" id="setTwitter"></div>
+                        <div><label>رابط صورة الخلفية (رابط مباشر)</label><input type="url" id="setHeroBg"></div>
                     </div>
                     <button type="submit" class="btn-primary" id="btnSaveSettings">حفظ الإعدادات</button>
                     <p id="settingsStatusMsg" class="msg"></p>
                 </form>
             </div>
         </section>
-
     </main>
 
     <script src="admin.js"></script>
