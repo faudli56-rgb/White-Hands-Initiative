@@ -54,6 +54,32 @@ async function fetchCases() {
     } catch (e) { container.innerHTML = '<div style="width:100%; text-align:center; color:red;">خطأ في الاتصال.</div>'; }
 }
 
+async function fetchReports() {
+    const container = document.getElementById('reportsContainer');
+    try {
+        const res = await fetch(`${API_URL}?action=getClosedCases`);
+        const reports = await res.json();
+        container.innerHTML = '';
+        if(reports.length === 0) { container.innerHTML = '<div>لا توجد تقارير لحالات مغلقة حتى الآن.</div>'; return; }
+
+        reports.forEach(r => {
+            let reportBtn = r.ReportURL && r.ReportURL.startsWith('http') 
+                ? `<a href="${r.ReportURL}" target="_blank" class="btn-solid-navy" style="display:block; text-align:center; padding:10px; border-radius:8px; text-decoration:none; margin-top:10px;"><i class="fas fa-file-pdf"></i> عرض التقرير الرسمي</a>`
+                : `<span style="color:#666; font-size:0.9rem; display:block; margin-top:10px;">التقرير قيد الإصدار</span>`;
+                
+            container.innerHTML += `
+                <div class="case-card" style="border-right-color: #2a9d8f;">
+                    <small style="color:#888;">رقم: ${r.CaseID} | ${r.Governorate}</small>
+                    <h3 style="color:var(--primary); margin:5px 0;">${r.Title}</h3>
+                    <p style="color:#2a9d8f; font-weight:bold; margin: 5px 0;"><i class="fas fa-check-circle"></i> حالة مكتملة ومغلقة</p>
+                    <p style="font-size:0.85rem; color:#555;">المبلغ المُنفذ: ${Number(r.Collected || r.Required).toLocaleString()} ريال</p>
+                    ${reportBtn}
+                </div>
+            `;
+        });
+    } catch (e) { container.innerHTML = '<div style="color:red;">تعذر جلب التقارير.</div>'; }
+}
+
 function applyFilter(cat, btnElement) {
     document.querySelectorAll('.chip').forEach(btn => btn.classList.remove('active'));
     btnElement.classList.add('active');
@@ -125,9 +151,6 @@ async function handleLogin(e) {
     } catch (e) { status.style.color = 'red'; status.innerText = "خطأ اتصال."; btn.disabled = false; btn.innerText = "دخول"; }
 }
 
-// ==========================================
-// تعديل دالة طلب المساعدة لدعم المرفقات
-// ==========================================
 async function submitBeneficiary(e) {
     e.preventDefault();
     const btn = document.getElementById('btnSubmitBen');
@@ -139,7 +162,6 @@ async function submitBeneficiary(e) {
     let mimeType = null;
     let fileName = null;
 
-    // قراءة الملف وتحويله إلى Base64
     if (fileInput.files.length > 0) {
         const file = fileInput.files[0];
         fileName = file.name;
@@ -173,45 +195,6 @@ async function submitBeneficiary(e) {
     }
     
     btn.disabled = false; btn.innerText = originalText;
-    submitData(payload, 'btnSubmitBen', 'benStatus', 'beneficiaryModal');
-}
-
-// ==========================================
-// دالة جلب وعرض تقارير الحالات المغلقة
-// ==========================================
-async function fetchReports() {
-    const container = document.getElementById('reportsContainer');
-    try {
-        const res = await fetch(`${API_URL}?action=getClosedCases`);
-        const reports = await res.json();
-        container.innerHTML = '';
-        if(reports.length === 0) { container.innerHTML = '<div>لا توجد تقارير لحالات مغلقة حتى الآن.</div>'; return; }
-
-        reports.forEach(r => {
-            let reportBtn = r.ReportURL && r.ReportURL.startsWith('http') 
-                ? `<a href="${r.ReportURL}" target="_blank" class="btn-solid-navy" style="display:block; text-align:center; padding:10px; border-radius:8px; text-decoration:none;"><i class="fas fa-file-pdf"></i> عرض التقرير الرسمي</a>`
-                : `<span style="color:#666; font-size:0.9rem;">التقرير قيد الإصدار</span>`;
-                
-            container.innerHTML += `
-                <div class="case-card" style="border-right-color: #2a9d8f;">
-                    <small style="color:#888;">رقم: ${r.CaseID} | ${r.Governorate}</small>
-                    <h3 style="color:var(--primary); margin:5px 0;">${r.Title}</h3>
-                    <p style="color:#2a9d8f; font-weight:bold; margin: 10px 0;">✓ حالة مكتملة ومغلقة</p>
-                    <p style="font-size:0.85rem; color:#555; margin-bottom:15px;">المبلغ المُنفذ: ${Number(r.Collected).toLocaleString()} ريال</p>
-                    ${reportBtn}
-                </div>
-            `;
-        });
-    } catch (e) { container.innerHTML = '<div style="color:red;">تعذر جلب التقارير.</div>'; }
-}
-    
-    if (!navigator.onLine) {
-        saveOfflineCase(payload);
-        closeModal('beneficiaryModal');
-        document.getElementById('beneficiaryModal').querySelector('form').reset();
-        return;
-    }
-    
     submitData(payload, 'btnSubmitBen', 'benStatus', 'beneficiaryModal');
 }
 
@@ -293,7 +276,7 @@ window.onload = () => {
     fetchSettings(); 
     fetchBanks(); 
     fetchCases(); 
-    fetchReports();
+    fetchReports(); // تشغيل جلب التقارير
     checkOfflineStatus(); 
 };
 
