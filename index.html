@@ -39,6 +39,7 @@
             <li><a href="#" onclick="switchPage('aboutPage', this)"><i class="fas fa-users"></i> من نحن</a></li>
             <li><a href="#" onclick="switchPage('programsPage', this)"><i class="fas fa-th-large"></i> برامجنا</a></li>
             <li><a href="#" onclick="switchPage('casesPage', this)"><i class="fas fa-heart"></i> الحالات</a></li>
+            <li><a href="#" onclick="switchPage('reportsPage', this)"><i class="fas fa-file-pdf"></i> التقارير</a></li>
             <li><a href="#" onclick="switchPage('partnersPage', this)"><i class="fas fa-handshake"></i> الشركاء</a></li>
         </ul>
         
@@ -108,39 +109,38 @@
                 </div>
             </div>
 
-            <!-- شريط الإحصائيات الجديد -->
-            <div class="stats-bar-new">
-                <div class="stat-item-new">
-                    <i class="fas fa-users"></i>
-                    <h3>42</h3>
-                    <p>متطوعاً<br>في فريق المبادرة</p>
-                </div>
-                <div class="stat-item-new">
-                    <i class="fas fa-handshake"></i>
-                    <h3>18</h3>
-                    <p>شريكاً<br>من أفراد ومبادرات مجتمعية</p>
-                </div>
-                <div class="stat-item-new">
-                    <i class="fas fa-check-circle"></i>
-                    <h3>29</h3>
-                    <p>حالة مكتملة<br>بفضل دعم الخيرين</p>
-                </div>
-                <div class="stat-item-new">
-                    <i class="fas fa-file-invoice-dollar"></i>
-                    <h3>38</h3>
-                    <p>قيد المتابعة<br>لتمويل الوضع والنفقة</p>
-                </div>
-                <div class="stat-item-new center-stat-new">
-                    <i class="fas fa-coins"></i>
-                    <h3>4,250,000</h3>
-                    <p>إجمالي التبرعات<br>منذ انطلاق المبادرة</p>
-                </div>
-                <div class="stat-item-new">
-                    <i class="fas fa-bullseye"></i>
-                    <h3>150+</h3>
-                    <p>حالة مستهدفة<br>في مختلف المحافظات</p>
-                </div>
+           <!-- 6. تبويب التقارير (الجديد) -->
+        <section id="reportsPage" class="page-section" style="padding:50px 5%; background: var(--bg-light);">
+            <div class="section-header" style="text-align: center; margin-bottom: 30px;">
+                <h2 class="col-title" style="font-size:2rem;">تقارير الحالات المغلقة</h2>
+                <p style="color:#666;">شفافية العطاء.. تصفح التقارير النهائية والموثقة للحالات التي تم تمويلها بالكامل وإغلاقها.</p>
             </div>
+            <div class="cases-carousel" id="reportsContainer">
+                <div style="text-align:center; width:100%;"><i class="fas fa-spinner fa-spin"></i> جاري تحميل التقارير...</div>
+            </div>
+        </section>
+
+    </main>
+    <!-- ================= نهاية الحاوية الرئيسية ================= -->
+
+    <!-- الفوتر الاحترافي (بديل الأرقام الوهمية) -->
+    <footer class="footer-new">
+        <div class="footer-content">
+            <div class="footer-logo-section">
+                <img src="https://lh3.googleusercontent.com/d/1yJMvphz5YGvgjUG9HNCAVkKWSBXyyPUC" alt="شعار المبادرة">
+                <p>معاً ... نصنع فرقاً في حياة المحتاجين</p>
+            </div>
+            <div class="footer-contact-section">
+                <h4>تواصل معنا</h4>
+                <p><i class="fas fa-map-marker-alt"></i> المقر الرئيسي: مأرب - اليمن</p>
+                <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/967718078843" target="_blank" style="color:white; text-decoration:none;">718078843</a></p>
+                <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/967718779795" target="_blank" style="color:white; text-decoration:none;">718779795</a></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>جميع الحقوق محفوظة &copy; 2026 مبادرة الأيادي البيضاء للتكافل والتمكين</p>
+        </div>
+    </footer>
         </section>
 
         <!-- 2. تبويب من نحن (بدون أي مساس بالبيانات) -->
@@ -220,6 +220,8 @@
         <button class="nav-item" onclick="switchPage('casesPage', this)"><i class="fas fa-heart"></i><span>الحالات</span></button>
         <button class="nav-item" onclick="openModal('donateModal')"><i class="fas fa-donate"></i><span>تبرع</span></button>
         <button class="nav-item" onclick="openModal('beneficiaryModal')"><i class="fas fa-edit"></i><span>طلب مساعدة</span></button>
+        <label style="display:block; text-align:right; font-weight:bold; color:var(--primary); margin-bottom:5px;">المرفقات (صور للحالة أو تقرير PDF)</label>
+                <input type="file" id="benFile" accept="image/*,.pdf" style="margin-bottom:15px;">
     </nav>
 
     <!-- ================= النوافذ المنبثقة (Modals) الأساسية ================= -->
