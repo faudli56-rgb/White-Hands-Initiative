@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbyy2Q69kwtZKExOtOMAetY67KLLd3W5WdGunwNtUQdVYyL7NIZp-zQNruxlK4txMZF0kw/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycby6-xQbJltjNtEBiczHz9MHMSNnOkKtO-RwRwC92p0odf7OvesO3oQpHT5MVhKKczaWIw/exec";
 
 let globalCases = [];
 
