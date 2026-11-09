@@ -26,6 +26,7 @@ async function fetchSettings() {
     try {
         const res = await fetch(`${API_URL}?action=getSettings`);
         const settings = await res.json();
+        window.siteSettings = settings || {};
         if(settings.Facebook) document.getElementById('linkFacebook').href = settings.Facebook;
         if(settings.Twitter) document.getElementById('linkTwitter').href = settings.Twitter;
         if(settings.HeroBgImage) document.getElementById('heroTarget').style.backgroundImage = `url('${settings.HeroBgImage}')`;
@@ -90,39 +91,141 @@ function renderCases(filter) {
     const container = document.getElementById('casesContainer');
     container.innerHTML = '';
     const filtered = globalCases.filter(c => filter === 'all' || c.Category === filter);
-    if(filtered.length === 0) { container.innerHTML = '<div>لا توجد حالات.</div>'; return; }
+    if(filtered.length === 0) {
+        container.innerHTML = '<div style="text-align:center;padding:30px;">لا توجد حالات.</div>';
+        return;
+    }
 
     filtered.forEach(c => {
-        const percent = Math.min((c.Collected / c.Required) * 100, 100);
-        const remaining = c.Required - c.Collected;
+        const required = Number(c.Required || 0);
+        const collected = Number(c.Collected || 0);
+        const percent = required > 0 ? Math.min((collected / required) * 100, 100) : 0;
+        const remaining = Math.max(required - collected, 0);
+        const familyNo = c.FamilyNo || 'غير متاح';
+        const image = c.ImageURL && String(c.ImageURL).startsWith('http')
+            ? `<img src="${c.ImageURL}" alt="صورة الحالة" class="case-image" loading="lazy" onerror="this.style.display='none'">`
+            : `<div class="case-image-placeholder"><i class="fas fa-heart"></i><span>لا توجد صورة</span></div>`;
+
         container.innerHTML += `
             <div class="case-card">
-                <small style="color:#888;">${c.CaseID} | ${c.Governorate}</small>
-                <h3 style="color:var(--primary); margin:5px 0;">${c.Title}</h3>
+                ${image}
+                <small style="color:#888;">رقم الحالة: ${c.CaseID} | الأسرة: ${familyNo} | ${c.Governorate || ''}</small>
+                <h3 style="color:var(--primary); margin:7px 0;">${c.Title || ''}</h3>
+                <p class="case-desc">${c.Description || c.Desc || ''}</p>
                 <div class="progress-bg"><div class="progress-fill" style="width: ${percent}%"></div></div>
                 <div class="case-stats">
                     <span style="color:var(--danger)">متبقي: ${remaining.toLocaleString()} ريال</span>
                     <span style="color:var(--primary)">${Math.round(percent)}%</span>
                 </div>
-                <button onclick="openModal('donateModal')" class="btn-solid-gold w-100 mt-10" style="border:none; cursor:pointer; padding:10px;">ساهم في الإغلاق <i class="fas fa-heart"></i></button>
+                <div class="case-actions">
+                    <button onclick="openCaseDetails('${encodeURIComponent(c.CaseID)}')" class="btn-outline-navy case-action-btn">
+                        <i class="fas fa-circle-info"></i> تفاصيل الحالة
+                    </button>
+                    <a href="${buildWhatsAppUrl(c)}" target="_blank" rel="noopener" class="whatsapp-details-btn">
+                        <i class="fab fa-whatsapp"></i> تفاصيل أكثر عبر واتساب
+                    </a>
+                    <button onclick="openModal('donateModal')" class="btn-solid-gold case-action-btn">
+                        ساهم في الإغلاق <i class="fas fa-heart"></i>
+                    </button>
+                </div>
             </div>
         `;
     });
+}
+
+function buildWhatsAppUrl(c) {
+    const phone = normalizeWhatsAppNumber(c.WhatsApp || getSettingValue('Whatsapp') || '967718078843');
+    const text = `السلام عليكم، أريد معرفة تفاصيل أكثر عن الحالة ${c.CaseID}${c.FamilyNo ? ` (الأسرة ${c.FamilyNo})` : ''}، وأرغب في الاطلاع على المستندات أو الفيديوهات المتوفرة قبل التبرع.`;
+    return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+}
+
+function normalizeWhatsAppNumber(value) {
+    let n = String(value || '').replace(/[^\d]/g, '');
+    if (n.startsWith('00')) n = n.substring(2);
+    if (n.startsWith('0')) n = '967' + n.substring(1);
+    if (!n.startsWith('967') && n.length <= 9) n = '967' + n;
+    return n;
+}
+
+function getSettingValue(key) {
+    return window.siteSettings && window.siteSettings[key] ? window.siteSettings[key] : '';
+}
+
+function openCaseDetails(encodedCaseId) {
+    const id = decodeURIComponent(encodedCaseId);
+    const c = globalCases.find(x => String(x.CaseID) === String(id));
+    if (!c) return;
+
+    const image = c.ImageURL && String(c.ImageURL).startsWith('http')
+        ? `<img src="${c.ImageURL}" alt="صورة الحالة" style="width:100%;max-height:360px;object-fit:cover;border-radius:12px;">`
+        : '';
+
+    const body = document.getElementById('caseDetailsBody');
+    if (!body) return;
+    body.innerHTML = `
+        ${image}
+        <div style="text-align:right;margin-top:15px;">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+                <span class="case-meta">رقم الحالة: <strong>${c.CaseID}</strong></span>
+                <span class="case-meta">رقم الأسرة: <strong>${c.FamilyNo || 'غير متاح'}</strong></span>
+                <span class="case-meta">${c.Governorate || ''}</span>
+            </div>
+            <h3 style="color:var(--primary);">${c.Title || ''}</h3>
+            <p style="white-space:pre-line;line-height:1.9;color:#555;">${c.Description || c.Desc || 'لا توجد تفاصيل إضافية منشورة.'}</p>
+            <p style="font-weight:bold;color:var(--primary);">المبلغ المطلوب: ${Number(c.Required || 0).toLocaleString()} ريال</p>
+            <a href="${buildWhatsAppUrl(c)}" target="_blank" rel="noopener" class="whatsapp-details-btn" style="margin-top:12px;">
+                <i class="fab fa-whatsapp"></i> أريد تفاصيل إضافية / فيديوهات الحالة
+            </a>
+        </div>
+    `;
+    openModal('caseDetailsModal');
 }
 
 async function submitData(payload, btnId, statusId, modalId) {
     const btn = document.getElementById(btnId);
     const status = document.getElementById(statusId);
     const originalText = btn.innerText;
-    btn.disabled = true; btn.innerText = "جاري الإرسال...";
+    btn.disabled = true;
+    btn.innerText = "جاري الإرسال...";
+    status.innerText = "";
+
     try {
-        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
-        const result = await res.json();
-        status.style.color = result.status === 'success' ? 'green' : 'red';
-        status.innerText = result.message;
-        if(result.status === 'success') setTimeout(() => { closeModal(modalId); status.innerText = ''; document.querySelector(`#${modalId} form`).reset(); }, 2000);
-    } catch (e) { status.style.color = 'red'; status.innerText = "خطأ في الاتصال."; } 
-    finally { btn.disabled = false; btn.innerText = originalText; }
+        const res = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+        });
+
+        const raw = await res.text();
+        let result;
+        try { result = JSON.parse(raw); }
+        catch (_) {
+            throw new Error(`استجابة غير صالحة من Google Apps Script (${res.status})`);
+        }
+
+        if (!res.ok || result.status === 'error') {
+            throw new Error(result.message || `HTTP ${res.status}`);
+        }
+
+        status.style.color = 'green';
+        status.innerText = result.message || 'تم الحفظ بنجاح.';
+
+        if(result.status === 'success') {
+            setTimeout(() => {
+                closeModal(modalId);
+                status.innerText = '';
+                const form = document.querySelector(`#${modalId} form`);
+                if (form) form.reset();
+            }, 1800);
+        }
+    } catch (e) {
+        console.error("submitData:", e);
+        status.style.color = 'red';
+        status.innerText = `تعذر حفظ الطلب: ${e.message}`;
+    } finally {
+        btn.disabled = false;
+        btn.innerText = originalText;
+    }
 }
 
 function submitVolunteer(e) {
@@ -164,6 +267,33 @@ async function submitBeneficiary(e) {
 
     if (fileInput.files.length > 0) {
         const file = fileInput.files[0];
+
+        // الفيديوهات لا تُرفع إلى الموقع حتى لا تتسبب في بطء/تعليق الموقع.
+        if (file.type && file.type.startsWith('video/')) {
+            btn.disabled = false;
+            btn.innerText = originalText;
+            const status = document.getElementById('benStatus');
+            if (status) {
+                status.style.color = '#b45309';
+                status.innerText = 'الفيديوهات لا تُرفع إلى الموقع. يرجى إرسال الفيديوهات عبر واتساب المبادرة.';
+            }
+            fileInput.value = '';
+            return;
+        }
+
+        // نسمح بصورة واحدة أو تقرير PDF، مع حد عملي لحجم الملف.
+        const maxFileSize = 8 * 1024 * 1024;
+        if (file.size > maxFileSize) {
+            btn.disabled = false;
+            btn.innerText = originalText;
+            const status = document.getElementById('benStatus');
+            if (status) {
+                status.style.color = '#b91c1c';
+                status.innerText = 'حجم المرفق كبير. الحد الأقصى 8 ميجابايت.';
+            }
+            return;
+        }
+
         fileName = file.name;
         mimeType = file.type;
         const reader = new FileReader();
@@ -194,8 +324,7 @@ async function submitBeneficiary(e) {
         return;
     }
     
-    btn.disabled = false; btn.innerText = originalText;
-    submitData(payload, 'btnSubmitBen', 'benStatus', 'beneficiaryModal');
+    await submitData(payload, 'btnSubmitBen', 'benStatus', 'beneficiaryModal');
 }
 
 function saveOfflineCase(payload) {
@@ -230,7 +359,7 @@ async function syncOfflineData() {
     if (btn) btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الرفع...';
     
     try {
-        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'syncOfflineCases', cases: offlineCases }) });
+        const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'syncOfflineCases', cases: offlineCases }) });
         const result = await res.json();
         if (result.status === 'success') {
             localStorage.removeItem('offlineCases');
