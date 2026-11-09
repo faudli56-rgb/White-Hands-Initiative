@@ -1,5 +1,5 @@
 // ⚠️ تأكد من وضع الرابط الجديد لـ Google Apps Script هنا
-const API_URL = "https://script.google.com/macros/s/AKfycby6-xQbJltjNtEBiczHz9MHMSNnOkKtO-RwRwC92p0odf7OvesO3oQpHT5MVhKKczaWIw/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbyy2Q69kwtZKExOtOMAetY67KLLd3W5WdGunwNtUQdVYyL7NIZp-zQNruxlK4txMZF0kw/exec";
 
 let adminData = null;
 
@@ -26,7 +26,7 @@ function showSection(sectionId, element) {
 async function fetchAdminData() {
     document.getElementById('loading').style.display = 'flex';
     try {
-        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'getAdminData' }) });
+        const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'getAdminData' }) });
         const result = await res.json();
         
         // حماية في حال رفض السيرفر الطلب
@@ -165,7 +165,7 @@ async function changeCaseStatus(caseId, newStatus) {
     const payload = { action: 'updateCaseStatus', caseId: caseId, newStatus: newStatus, reportDetails: reportDetails, adminUser: sessionStorage.getItem('userName') };
     
     try {
-        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+        const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
         const result = await res.json();
         if(result.status === 'success') fetchAdminData();
         else { alert(result.message); document.getElementById('loading').style.display = 'none'; }
@@ -186,7 +186,7 @@ async function handleAssignTask(e) {
     };
 
     try {
-        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+        const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
         const result = await res.json();
         msg.style.color = result.status === 'success' ? 'green' : 'red';
         msg.innerText = result.message;
@@ -209,7 +209,7 @@ async function addUser(e) {
     const msg = document.getElementById('userStatusMsg');
     btn.disabled = true; btn.innerText = "جاري الإضافة...";
     try {
-        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+        const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
         const result = await res.json();
         msg.style.color = result.status === 'success' ? 'green' : 'red';
         msg.innerText = result.message;
@@ -233,7 +233,7 @@ async function saveSettings(e) {
     const msg = document.getElementById('settingsStatusMsg');
     btn.disabled = true; btn.innerText = "جاري الحفظ...";
     try {
-        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+        const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
         const result = await res.json();
         msg.style.color = result.status === 'success' ? 'green' : 'red';
         msg.innerText = result.message;
