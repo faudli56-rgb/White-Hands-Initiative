@@ -231,11 +231,21 @@
                 <select id="benGov" required><option value="">المحافظة...</option><option value="مأرب">مأرب</option><option value="تعز">تعز</option></select>
                 <select id="benCat" required><option value="">التصنيف...</option><option value="مرضية">مرضية</option><option value="أيتام">أيتام</option><option value="معسرة">معسرة</option></select>
                 <textarea id="benDesc" placeholder="شرح تفصيلي للحالة..." rows="3" required></textarea>
-                <label style="display:block; text-align:right; font-weight:bold; color:var(--primary); margin-bottom:5px;">المرفقات (صور للحالة أو تقرير PDF)</label>
+                <label style="display:block; text-align:right; font-weight:bold; color:var(--primary); margin-bottom:5px;">المرفق (صورة للحالة أو تقرير PDF — الفيديوهات عبر واتساب فقط)</label>
                 <input type="file" id="benFile" accept="image/*,.pdf" style="margin-bottom:15px;">
+                <small style="display:block; color:#666; line-height:1.7; margin:-8px 0 14px;">الفيديوهات لا تُرفع للموقع لتجنب بطء الموقع؛ أرسلها لفريق المبادرة عبر واتساب عند الحاجة.</small>
                 <button type="submit" class="btn-solid-gold w-100" id="btnSubmitBen">إرسال الطلب للإدارة</button>
                 <p id="benStatus" class="status-msg"></p>
             </form>
+        </div>
+    </div>
+
+    <div id="caseDetailsModal" class="modal-overlay">
+        <div class="modal-card case-details-modal">
+            <span class="close-modal" onclick="closeModal('caseDetailsModal')">&times;</span>
+            <i class="fas fa-heart modal-icon" style="color:#d4af37;"></i>
+            <h3 class="col-title">تفاصيل الحالة</h3>
+            <div id="caseDetailsBody"></div>
         </div>
     </div>
 
